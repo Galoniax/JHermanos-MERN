@@ -1,3 +1,13 @@
+@import "tailwindcss";
+
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/playfair-display";
+
+@theme {
+  --font-display: "Playfair Display Variable", serif;
+  --font-inter: "Inter Variable", sans-serif;
+}
+
 .counter {
   font-size: 16px;
   padding: 5px 10px;
