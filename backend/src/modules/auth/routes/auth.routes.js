@@ -92,7 +92,7 @@ router.get("/me", isAuthenticated, async (req, res, next) => {
 
     res.json({
       success: true,
-      user,
+      data: user,
     });
   } catch (error) {
     next(error);

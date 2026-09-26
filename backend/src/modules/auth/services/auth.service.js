@@ -12,7 +12,7 @@ export class AuthService {
     const user = await User.findOne({ email });
 
     if (!user) {
-      throw new ErrorResponse("Usuario no encontrado", 404);
+      throw new ErrorResponse("Credenciales incorrectas", 404);
     }
     return user;
   }
@@ -23,7 +23,9 @@ export class AuthService {
     const user = await this.getByEmail(email);
 
     // Validar contraseña
-    const passwordMatch = await comparePassword(password, user.password);
+    const passwordMatch = user.password
+      ? await comparePassword(password, user.password)
+      : false;
 
     if (!passwordMatch) {
       throw new ErrorResponse("Credenciales incorrectas", 401);
@@ -38,7 +40,7 @@ export class AuthService {
 
   // REGISTER
   // ============================================================
-  async register(email, password) {
+  async register(email, password, dni) {
     const existingUser = await User.findOne({ email });
 
     if (existingUser) {
@@ -47,7 +49,7 @@ export class AuthService {
 
     const hashedPassword = await hashPassword(password);
 
-    const newUser = await User.create({ email, password: hashedPassword });
+    const newUser = await User.create({ email, password: hashedPassword, dni });
 
     return createToken(newUser);
   }

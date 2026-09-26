@@ -23,14 +23,15 @@ app.use(
   cors({
     origin: origins,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    allowedHeaders: ["Content-Type", "Authorization", "X-Auth-Token", "X-Client-System"], // Headers Autorizados
+    exposedHeaders: ["X-Auth-Token"], // Headers Expuestos a frontend
     credentials: true,
   }),
 );
 
 app.use(express.json());
 
-connectDB();
+await connectDB();
 
 // Cookie parser
 app.use(cookieParser());
@@ -49,7 +50,7 @@ app.get(`${API_PREFIX}/health`, (req, res) => {
 app.use(`${API_PREFIX}/auth`, Auth);
 
 // Middleware de manejo de errores
-app.use(ErrorHandler); 
+app.use(ErrorHandler);
 
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}${API_PREFIX}`);

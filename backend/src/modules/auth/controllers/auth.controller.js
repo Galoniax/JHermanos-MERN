@@ -41,9 +41,9 @@ export class AuthController {
   // ============================================================
   register = async (req, res, next) => {
     try {
-      const { email, password } = req.body;
+      const { email, password, dni } = req.body;
 
-      const token = await this.authService.register(email, password);
+      const token = await this.authService.register(email, password, dni);
 
       const cookieAge = 24 * 60 * 60 * 1000; // 1 Día
 

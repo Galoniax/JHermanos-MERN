@@ -4,7 +4,11 @@ import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 
 import { ErrorResponse } from "../errors/error-handler.js";
 import User from "../models/User.js";
-import { GOOGLE_CALLBACK_URL, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from "./config.js";
+import {
+  GOOGLE_CALLBACK_URL,
+  GOOGLE_CLIENT_ID,
+  GOOGLE_CLIENT_SECRET,
+} from "./config.js";
 
 passport.use(
   new GoogleStrategy(
@@ -27,7 +31,12 @@ passport.use(
           user = await User.create({
             email,
             provider: "GOOGLE",
+            avatar_url: profile.photos?.[0]?.value || "",
           });
+        }
+
+        if (!user.active) {
+          return done(new ErrorResponse("Usuario inactivo", 403));
         }
 
         return done(null, user);

@@ -10,6 +10,13 @@ const UserSchema = new Schema(
       unique: true,
       trim: true,
     },
+    dni: {
+      type: String,
+      required: true,
+      unique: true,
+      match: [/^\d{7,8}$/, "El DNI debe tener 7 u 8 dígitos numéricos"],
+      trim: true,
+    },
     password: {
       type: String,
     },
