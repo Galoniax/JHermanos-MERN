@@ -1,5 +1,8 @@
 # Dependencias
 node_modules/
+certs/
+
+postman
 
 # Variables de entorno
 .env

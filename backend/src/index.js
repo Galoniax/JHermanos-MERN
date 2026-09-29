@@ -1,0 +1,1 @@
+export { default as Auth } from "./modules/auth/routes/auth.routes.js";
