@@ -1,10 +1,13 @@
 import { Link } from "react-router-dom";
 import { ROUTES } from "../routes/paths";
+import { useCart } from "../hooks/useCart";
 
 // Navbar TEMPORAL solo para que el contador del carrito se vea.
 // Valentina: reemplazalo por tu Navbar definitivo cambiando el import en App.jsx.
-// Tu Navbar tiene que recibir los props cartCount y onOpenCart.
-export default function NavbarTemporal({ cartCount, onOpenCart }) {
+// En el tuyo: const { cartCount, openCart } = useCart();
+export default function NavbarTemporal() {
+  const { cartCount, openCart } = useCart();
+
   return (
     <header className="flex items-center justify-between px-6 py-4 border-b border-stone-200 bg-white">
       <Link to={ROUTES.HOME} className="font-display text-xl text-stone-900">
@@ -15,7 +18,7 @@ export default function NavbarTemporal({ cartCount, onOpenCart }) {
         <Link to={ROUTES.PRODUCTS}>Productos</Link>
         <button
           type="button"
-          onClick={onOpenCart}
+          onClick={openCart}
           className="rounded-full bg-stone-900 px-4 py-2 text-white"
         >
           Carrito ({cartCount})

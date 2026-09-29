@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import ProductList from "../components/ProductList";
-import { normalizeProductList } from "../utils/normalizeProduct";
+import { useCart } from "../hooks/useCart";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000/api";
 
-export default function Products({ onAddToCart }) {
+export default function Products() {
+  const { addToCart } = useCart();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -17,7 +18,7 @@ export default function Products({ onAddToCart }) {
           throw new Error(`Error ${response.status} al cargar los productos`);
         }
         const data = await response.json();
-        setProducts(normalizeProductList(data));
+        setProducts(Array.isArray(data) ? data : (data.data ?? []));
       } catch (err) {
         setError(err.message);
       } finally {
@@ -35,7 +36,7 @@ export default function Products({ onAddToCart }) {
       {loading && <p className="font-inter">Cargando productos...</p>}
       {error && <p className="font-inter text-red-600">{error}</p>}
       {!loading && !error && (
-        <ProductList products={products} onAddToCart={onAddToCart} />
+        <ProductList products={products} onAddToCart={addToCart} />
       )}
     </main>
   );

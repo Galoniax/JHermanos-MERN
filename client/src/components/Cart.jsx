@@ -1,31 +1,28 @@
-const formatPrice = (value) =>
-  new Intl.NumberFormat("es-AR", {
-    style: "currency",
-    currency: "ARS",
-    maximumFractionDigits: 0,
-  }).format(value);
+import { formatPrice } from "../utils/formatPrice";
+import { useCart } from "../hooks/useCart";
 
-export default function Cart({
-  open,
-  items,
-  onClose,
-  onChangeQuantity,
-  onRemove,
-  onClear,
-}) {
-  if (!open) return null;
+export default function Cart() {
+  const {
+    cart: items,
+    cartTotal: total,
+    isCartOpen,
+    closeCart,
+    changeQuantity,
+    removeFromCart,
+    clearCart,
+  } = useCart();
 
-  const total = items.reduce((sum, item) => sum + item.precio * item.cantidad, 0);
+  if (!isCartOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex justify-end bg-black/40" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex justify-end bg-black/40" onClick={closeCart}>
       <aside
         className="flex h-full w-full max-w-md flex-col bg-white p-6 font-inter"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="mb-4 flex items-center justify-between">
           <h2 className="font-display text-2xl">Tu carrito</h2>
-          <button type="button" onClick={onClose} aria-label="Cerrar carrito">
+          <button type="button" onClick={closeCart} aria-label="Cerrar carrito">
             ✕
           </button>
         </div>
@@ -36,19 +33,19 @@ export default function Cart({
           <>
             <ul className="flex-1 space-y-4 overflow-y-auto">
               {items.map((item) => (
-                <li key={item.id} className="flex gap-3">
+                <li key={item._id} className="flex gap-3">
                   <img
-                    src={item.imagen}
-                    alt={item.nombre}
+                    src={item.image_url}
+                    alt={item.name}
                     className="h-16 w-16 rounded object-cover"
                   />
                   <div className="flex-1">
-                    <p className="text-sm font-medium">{item.nombre}</p>
-                    <p className="text-sm text-stone-600">{formatPrice(item.precio)}</p>
+                    <p className="text-sm font-medium">{item.name}</p>
+                    <p className="text-sm text-stone-600">{formatPrice(item.price)}</p>
                     <div className="mt-1 flex items-center gap-2">
                       <button
                         type="button"
-                        onClick={() => onChangeQuantity(item.id, -1)}
+                        onClick={() => changeQuantity(item._id, -1)}
                         className="h-6 w-6 rounded border"
                       >
                         −
@@ -56,14 +53,14 @@ export default function Cart({
                       <span>{item.cantidad}</span>
                       <button
                         type="button"
-                        onClick={() => onChangeQuantity(item.id, 1)}
+                        onClick={() => changeQuantity(item._id, 1)}
                         className="h-6 w-6 rounded border"
                       >
                         +
                       </button>
                       <button
                         type="button"
-                        onClick={() => onRemove(item.id)}
+                        onClick={() => removeFromCart(item._id)}
                         className="ml-auto text-sm text-red-600"
                       >
                         Quitar
@@ -81,7 +78,7 @@ export default function Cart({
               </p>
               <button
                 type="button"
-                onClick={onClear}
+                onClick={clearCart}
                 className="mt-3 w-full rounded-md border py-2 text-sm"
               >
                 Vaciar carrito
