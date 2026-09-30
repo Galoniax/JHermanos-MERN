@@ -15,7 +15,10 @@ export default function Cart() {
   if (!isCartOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex justify-end bg-black/40" onClick={closeCart}>
+    <div
+      className="fixed inset-0 z-50 flex justify-end bg-black/40"
+      onClick={closeCart}
+    >
       <aside
         className="flex h-full w-full max-w-md flex-col bg-white p-6 font-inter"
         onClick={(e) => e.stopPropagation()}
@@ -41,7 +44,9 @@ export default function Cart() {
                   />
                   <div className="flex-1">
                     <p className="text-sm font-medium">{item.name}</p>
-                    <p className="text-sm text-stone-600">{formatPrice(item.price)}</p>
+                    <p className="text-sm text-stone-600">
+                      {formatPrice(item.price)}
+                    </p>
                     <div className="mt-1 flex items-center gap-2">
                       <button
                         type="button"
