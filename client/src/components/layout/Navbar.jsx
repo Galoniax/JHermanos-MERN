@@ -1,23 +1,18 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ROUTES } from "../../routes/paths";
+import { useCart } from "../../hooks/useCart";
+import Cart from "../Cart";
 
-export default function Navbar({ cartCount = 0, onOpenCart }) {
+export default function Navbar() {
+  const { cartCount, openCart, closeCart } = useCart();
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
-
-  const toggleMenu = () => {
-    setIsMenuOpen((prev) => !prev);
-  };
 
   const closeMenu = () => {
     setIsMenuOpen(false);
   };
-
-  // Close mobile menu when route changes
-  useEffect(() => {
-    setIsMenuOpen(false);
-  }, [location.pathname]);
 
   // Lock body scroll when mobile menu is open
   useEffect(() => {
@@ -110,10 +105,13 @@ export default function Navbar({ cartCount = 0, onOpenCart }) {
               type="button"
               id="btn-abrir-carrito"
               className="btn btn--cart"
-              onClick={onOpenCart}
+              onClick={openCart}
               aria-label={`Ver carrito con ${cartCount} productos`}
             >
-              Carrito <span id="carrito-contador" className="cart-badge">{cartCount}</span>
+              Carrito{" "}
+              <span id="carrito-contador" className="cart-badge">
+                {cartCount}
+              </span>
             </button>
 
             <button
@@ -123,7 +121,7 @@ export default function Navbar({ cartCount = 0, onOpenCart }) {
               aria-label={isMenuOpen ? "Cerrar menú" : "Abrir menú"}
               aria-expanded={isMenuOpen}
               aria-controls="main-nav"
-              onClick={toggleMenu}
+              onClick={() => setIsMenuOpen((prev) => !prev)}
             >
               <span className="menu-linea" aria-hidden="true"></span>
               <span className="menu-linea" aria-hidden="true"></span>
@@ -132,6 +130,8 @@ export default function Navbar({ cartCount = 0, onOpenCart }) {
           </div>
         </div>
       </header>
+
+      {openCart && <Cart />}
 
       {/* Overlay de fondo para el menú móvil */}
       <div

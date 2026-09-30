@@ -2,6 +2,8 @@ import "./App.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { appRoutes } from "./routes/appRoutes";
+
+import { CartProvider } from "./context/CartProvider";
 import Layout from "./components/layout/Layout";
 
 // TanStack Query Client Setup
@@ -18,13 +20,13 @@ const queryClient = new QueryClient({
 
 function AppRoutesContent() {
   return (
-    <Routes>
-      <Route element={<Layout />}>
+    <Layout>
+      <Routes>
         {appRoutes.map((route, idx) => (
           <Route key={idx} path={route.path} element={route.element} />
         ))}
-      </Route>
-    </Routes>
+      </Routes>
+    </Layout>
   );
 }
 
@@ -32,7 +34,9 @@ function App() {
   return (
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
-        <AppRoutesContent />
+        <CartProvider>
+          <AppRoutesContent />
+        </CartProvider>
       </QueryClientProvider>
     </BrowserRouter>
   );
