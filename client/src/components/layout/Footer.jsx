@@ -1,4 +1,13 @@
+import { useLocation } from "react-router-dom";
+import { OUT_AUTH } from "../../routes/paths";
+
 export default function Footer() {
+  const location = useLocation();
+
+  if (OUT_AUTH.includes(location.pathname)) {
+    return null;
+  }
+
   return (
     <footer className="site-footer" id="contacto">
       <div className="wrap site-footer__inner">
@@ -7,7 +16,8 @@ export default function Footer() {
             Hermanos <span>Jota</span>
           </p>
           <address>
-            Av. San Juan 2847, Barrio de San Cristóbal<br />
+            Av. San Juan 2847, Barrio de San Cristóbal
+            <br />
             C1232AAB — Ciudad Autónoma de Buenos Aires, Argentina
           </address>
           <p>Lunes a Viernes 10:00–19:00 · Sábados 10:00–14:00</p>
@@ -53,7 +63,8 @@ export default function Footer() {
         </div>
 
         <p className="site-footer__copy col-span-full">
-          Hermanos Jota — © {new Date().getFullYear()}. Casa Taller, Buenos Aires.
+          Hermanos Jota — © {new Date().getFullYear()}. Casa Taller, Buenos
+          Aires.
         </p>
       </div>
     </footer>

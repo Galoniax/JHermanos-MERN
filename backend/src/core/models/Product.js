@@ -4,6 +4,11 @@ const { Schema } = mongoose;
 
 const ProductSchema = new Schema(
   {
+    slug: {
+      type: String,
+      trim: true,
+      index: true,
+    },
     name: {
       type: String,
       required: true,
@@ -14,25 +19,22 @@ const ProductSchema = new Schema(
       required: true,
       trim: true,
     },
+    longDescription: {
+      type: String,
+      trim: true,
+    },
     price: {
       type: Schema.Types.Decimal128,
       required: true,
       min: 0,
     },
     category: {
-      type: Schema.Types.ObjectId,
-      ref: "Category",
+      type: Schema.Types.Mixed,
       required: true,
     },
-    metrics: [
-      {
-        type: String,
-        trim: true,
-      },
-    ],
-    especifications: {
-      type: Map,
-      of: String,
+    specs: {
+      type: Array,
+      default: [],
     },
     stock: {
       type: Number,

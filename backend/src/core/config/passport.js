@@ -27,19 +27,21 @@ passport.use(
 
         let user = await User.findOne({ email });
 
-        if (!user) {
-          user = await User.create({
-            email,
-            provider: "GOOGLE",
-            avatar_url: profile.photos?.[0]?.value || "",
-          });
+        if (user) {
+          if (!user.active) {
+            return done(new ErrorResponse("Usuario inactivo", 403));
+          }
+
+          return done(null, { isNew: false, payload: user });
         }
 
-        if (!user.active) {
-          return done(new ErrorResponse("Usuario inactivo", 403));
-        }
+        const payload = {
+          email,
+          provider: "GOOGLE",
+          avatar_url: profile.photos?.[0]?.value || "",
+        };
 
-        return done(null, user);
+        return done(null, { isNew: true, payload: payload });
       } catch (error) {
         return done(error, null);
       }

@@ -1,8 +1,9 @@
 import axios from "axios";
+import { API_URL } from "../config/config";
 
 // CONFIGURACION DEL INTERCEPTOR (manejo de peticiones y respuestas)
 export const interceptor = axios.create({
-    baseURL: import.meta.env.VITE_API_URL || "http://localhost:3000/api",
+    baseURL: API_URL || "http://localhost:3000/api",
     headers: {
         "Content-Type": "application/json"
     },
@@ -30,17 +31,12 @@ interceptor.interceptors.response.use(
     return response.data;
   },
   (error) => {
-    const backendData = error.response?.data;
+    const response = error.response?.data;
 
-    console.log("backendData", backendData)
-    console.log("error.response", error.response)
-    console.log("error", error)
-    
     const normalizedError = {
       status: error.response?.status || 500,
       success: false,
-      message: backendData?.message || "Error inesperado",
-      error: backendData?.error || null,
+      error: response?.error || "Error inesperado",
     };
 
     return Promise.reject(normalizedError);

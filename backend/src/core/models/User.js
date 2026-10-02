@@ -20,6 +20,11 @@ const UserSchema = new Schema(
     password: {
       type: String,
     },
+    phone: {
+      type: String,
+      required: true,
+      trim: true,
+    },
     avatar_url: {
       type: String,
     },

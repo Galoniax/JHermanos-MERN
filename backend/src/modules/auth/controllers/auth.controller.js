@@ -6,8 +6,7 @@ export class AuthController {
   constructor(authService = new AuthService()) {
     this.authService = authService;
   }
-  // LOGIN
-  // ============================================================
+
   login = async (req, res, next) => {
     try {
       const { email, password } = req.body;
@@ -15,8 +14,7 @@ export class AuthController {
       const token = await this.authService.login(email, password);
 
       const cookieAge = 24 * 60 * 60 * 1000; // 1 Día
-
-      const isProduction = process.env.NODE_ENV === "production";
+      const isProduction = NODE_ENV === "production";
 
       const cookieOptions = {
         httpOnly: true,
@@ -25,8 +23,6 @@ export class AuthController {
         maxAge: cookieAge,
         path: "/",
       };
-
-      console.log(`Login exitoso. User: ${email}`);
 
       return res.cookie("accessToken", token, cookieOptions).status(200).json({
         success: true,
@@ -37,17 +33,14 @@ export class AuthController {
     }
   };
 
-  // REGISTER
-  // ============================================================
   register = async (req, res, next) => {
     try {
-      const { email, password, dni } = req.body;
+      const { user, token } = req.body;
 
-      const token = await this.authService.register(email, password, dni);
+      const response = await this.authService.register(user, token);
 
       const cookieAge = 24 * 60 * 60 * 1000; // 1 Día
-
-      const isProduction = process.env.NODE_ENV === "production";
+      const isProduction = NODE_ENV === "production";
 
       const cookieOptions = {
         httpOnly: true,
@@ -57,19 +50,15 @@ export class AuthController {
         path: "/",
       };
 
-      console.log(`Register exitoso. User: ${email}`);
-
-      return res.cookie("accessToken", token, cookieOptions).status(200).json({
+      return res.cookie("accessToken", response.token, cookieOptions).status(200).json({
         success: true,
-        message: "Register exitoso",
+        message: "Registro exitoso",
       });
     } catch (error) {
       next(error);
     }
   };
 
-  // LOGOUT
-  // ============================================================
   logout = async (req, res, next) => {
     try {
       let token = null;

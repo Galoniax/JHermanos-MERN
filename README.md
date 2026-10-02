@@ -1,9 +1,10 @@
-# Hermanos Jota - Entrega Sprint 1 y 2
+# Hermanos Jota — Plataforma E-Commerce Full Stack
 
 **Instituto Tecnológico de Buenos Aires (ITBA)** — Certificación Profesional en Full Stack Development  
 **Comisión:** 1TT | **Equipo:** Grupo 3
 
-* **Sitio Web en Producción (GitHub Pages):** [https://valentinapertile.github.io/FullStackDeveloper-1TT-Grupo3/](https://valentinapertile.github.io/FullStackDeveloper-1TT-Grupo3/)
+* **Sitio Web de Referencia Estática (GitHub Pages - Sprints 1 y 2):** [https://valentinapertile.github.io/FullStackDeveloper-1TT-Grupo3/](https://valentinapertile.github.io/FullStackDeveloper-1TT-Grupo3/)
+* **Repositorio del Proyecto:** [https://github.com/ValentinaPertile/FullStackDeveloper-1TT-Grupo3](https://github.com/ValentinaPertile/FullStackDeveloper-1TT-Grupo3)
 
 ---
 
@@ -21,163 +22,147 @@
 
 ## Descripción del Proyecto
 
-**Hermanos Jota** es una plataforma web de catálogo digital y comercio electrónico para un taller boutique de mobiliario artesanal con sede en Buenos Aires. La propuesta se enfoca en el diseño consciente y atemporal, empleando maderas nativas certificadas FSC®, acabados con aceites naturales y textiles ecológicos.
+**Hermanos Jota** es una plataforma web de catálogo digital y comercio electrónico desarrollada bajo el stack **MERN (MongoDB, Express, React, Node.js)** para un taller boutique de mobiliario artesanal con sede en Buenos Aires. 
+
+La aplicación integra navegación dinámica con React Router, gestión de estado global para carrito y autenticación, consumo de APIs REST desacopladas, persistencia en base de datos NoSQL MongoDB, autenticación híbrida (JWT + Google OAuth 2.0 con ventana emergente) y validación de esquemas con Zod tanto en cliente como en servidor.
 
 ---
 
-## Matriz de Cumplimiento de Requerimientos Académicos
+## Arquitectura y Tecnologías del Sistema
 
-| Criterio / Requerimiento | Implementación en el Proyecto | Archivos de Referencia |
+### 1. Frontend (`/client`)
+* **React 19 + Vite:** SPA de alto rendimiento con renderizado optimizado y Vite como empaquetador moderno.
+* **React Router v7:** Enrutamiento del lado del cliente con soporte de rutas dinámicas (`/product/:id`, `/contacto`, `/products`, `/login`, `/register`).
+* **Tailwind CSS + Vanilla Design System:** Estilos con variables CSS de diseño de marca, tipografías Playfair Display e Inter y componentes adaptables para móviles.
+* **TanStack Query + Axios Interceptor:** Gestión de peticiones HTTP asíncronas con configuración centralizada de baseURL, credenciales y captura normalizada de errores.
+* **Context API:** 
+  * `CartProvider` (`useCart`): Carrito en memoria y persistido en `localStorage` con Drawer lateral.
+  * `AuthProvider` (`useAuth`): Estado global de usuario, sincronización automática con backend y listeners para Google OAuth Popup.
+* **Zod:** Validación de formularios en tiempo real en el cliente.
+
+### 2. Backend (`/backend`)
+* **Node.js + Express 5:** Servidor REST modularizado en arquitectura por capas (`core`, `modules`, `shared`).
+* **MongoDB + Mongoose:** Base de datos NoSQL con esquemas tipados y modelos relacionales:
+  * `Product`: Catálogo con campos `slug`, `specs`, `price`, `category`, `image_url` y `stock`.
+  * `Category`: Categorías de muebles asociadas a productos.
+  * `User`: Usuarios con contraseñas hasheadas mediante `bcrypt` y flags de estado.
+  * `Order`: Registro de órdenes de compra con ítems, totales, datos de envío y cliente.
+  * `Contact`: Mensajes de contacto recibidos con estado de lectura.
+* **Passport.js + Google OAuth 2.0 + JWT:** Autenticación mediante tokens JWT almacenados en cookies HTTP-Only y flujo OAuth por popup con cierre automático.
+* **Manejo Centralizado de Errores & CORS:** Middleware global de control de excepciones y cabeceras de seguridad.
+
+---
+
+## Cómo Ejecutar el Proyecto en Local
+
+### Requisitos Previos
+* **Node.js** (versión 18 o superior).
+* **npm** (versión 9 o superior).
+* **MongoDB** (instancia local en `localhost:27017` o cuenta en MongoDB Atlas).
+
+---
+
+### Paso 1: Configurar y Levantar el Backend
+
+1. Ingresar al directorio del backend:
+   ```bash
+   cd backend
+   ```
+
+2. Instalar las dependencias:
+   ```bash
+   npm install
+   ```
+
+3. Configurar las variables de entorno:
+   Copiar el archivo de plantilla `.env.example` a `.env`:
+   ```bash
+   cp .env.example .env
+   ```
+   *(Verificar que `MONGODB_URI` apunte a tu base de datos local o de Atlas y que `JWT_SECRET` esté definido).*
+
+4. **(Opcional pero recomendado) Poblar la base de datos:**
+   Ejecutar el script de seeding para cargar las categorías y los 11 muebles del catálogo en MongoDB:
+   ```bash
+   npm run seed
+   ```
+
+5. Iniciar el servidor Express en modo desarrollo:
+   ```bash
+   npm run dev
+   ```
+   El servidor quedará disponible en: `http://localhost:3000/api`
+
+---
+
+### Paso 2: Configurar y Levantar el Frontend
+
+1. En una nueva terminal, ingresar al directorio del cliente:
+   ```bash
+   cd client
+   ```
+
+2. Instalar las dependencias:
+   ```bash
+   npm install
+   ```
+
+3. Configurar las variables de entorno:
+   Copiar el archivo `.env.example` a `.env`:
+   ```bash
+   cp .env.example .env
+   ```
+   *(Por defecto contiene `VITE_API_URL=http://localhost:3000/api`).*
+
+4. Iniciar el servidor de desarrollo Vite:
+   ```bash
+   npm run dev
+   ```
+   La aplicación se abrirá en: **`http://localhost:5173/`**
+
+---
+
+## Endpoints de la API REST
+
+### 1. Catálogo de Productos (`/api/productos`)
+| Método | Endpoint | Descripción | Acceso |
+| :--- | :--- | :--- | :--- |
+| `GET` | `/api/productos` | Obtiene el catálogo completo. Soporta filtro opcional: `?categoria=Living` o `?category=Living`. | Público |
+| `GET` | `/api/productos/:id` | Obtiene el detalle de un producto por ID o slug (ej: `aconcagua`). | Público |
+
+### 2. Autenticación de Usuarios (`/api/auth`)
+| Método | Endpoint | Descripción | Acceso |
+| :--- | :--- | :--- | :--- |
+| `POST` | `/api/auth/register` | Registra un nuevo usuario y genera cookie de sesión JWT. | Público |
+| `POST` | `/api/auth/login` | Inicia sesión con email y contraseña. | Público |
+| `GET` | `/api/auth/google` | Inicia el flujo de autenticación con Google OAuth 2.0. | Público |
+| `GET` | `/api/auth/me` | Obtiene los datos del usuario autenticado actual. | Autenticado |
+| `POST` | `/api/auth/logout` | Cierra la sesión y destruye la cookie de autenticación. | Público |
+
+### 3. Contacto y Consultas (`/api/contact` o `/api/contacto`)
+| Método | Endpoint | Descripción | Acceso |
+| :--- | :--- | :--- | :--- |
+| `POST` | `/api/contact` | Envía y almacena un mensaje de contacto (validado con Zod). | Público |
+| `GET` | `/api/contact` | Lista todas las consultas recibidas en orden cronológico. | Autenticado |
+
+### 4. Órdenes y Checkout (`/api/orders`)
+| Método | Endpoint | Descripción | Acceso |
+| :--- | :--- | :--- | :--- |
+| `POST` | `/api/orders` | Crea una nueva orden de compra desde el carrito (soporta usuarios e invitados). | Público |
+| `GET` | `/api/orders` | Lista las órdenes de compra asociadas. | Autenticado |
+
+---
+
+## Matriz de Cumplimiento de Requerimientos Técnicos
+
+| Criterio | Implementación en el Proyecto | Archivos Principales |
 | :--- | :--- | :--- |
-| **Estructura Semántica** | Uso estricto de etiquetas semánticas (`<header>`, `<nav>`, `<main>`, `<article>`, `<section>`, `<aside>`, `<footer>`, `<dialog>`). Jerarquía única de encabezados `h1`-`h4`. | `index.html`, `productos.html`, `producto.html`, `contacto.html` |
-| **Diseño y Maquetación CSS** | Maquetación con **CSS Grid** (grilla de catálogo) y **Flexbox** (alineaciones, cabecera, cards). Uso de CSS Custom Properties (variables) para paleta de colores, tipografías y espaciados. | `css/styles.css`, `css/productos.css`, `css/header.css` |
-| **Diseño Responsive (Mobile First)** | Consultas de medios (`@media`) fluidas, tipografía adaptable con `clamp()` y menú interactivo para dispositivos móviles. | `css/header.css`, `css/inicio.css`, `css/contacto.css` |
-| **Consumo Asíncrono de Datos** | Carga dinámica de productos almacenados en formato JSON mediante `fetch()` y control de errores con `try/catch`. | `data/productos.json`, `js/productos.js`, `js/producto.js` |
-| **Manipulación Dinámica del DOM** | Generación de tarjetas de producto, renderizado dinámico de especificaciones técnicas y renderizado reactivo del carrito de compras. | `js/productos.js`, `js/producto.js`, `js/carrito.js` |
-| **Gestión de Estado y Persistencia** | Almacenamiento continuo del carrito en `localStorage`, sincronizando cantidades, importes acumulados y vaciado post-checkout. | `js/carrito.js` |
-| **Interactividad y Eventos** | Búsqueda y filtrado en vivo, delegación de eventos (`event delegation`) para optimizar rendimiento de memoria. | `js/productos.js`, `js/carrito.js`, `js/header.js` |
-| **Validación de Formularios** | Validación en tiempo real (eventos `input` y `blur`), expresiones regulares para validación de email, atributos accesibles y feedback de envío. | `contacto.html`, `js/contacto.js`, `css/contacto.css` |
-| **Modularidad JavaScript** | Estructuración del código en módulos ES6 con importación y exportación selectiva de funciones (`import` / `export`). | `js/*.js` |
-| **Despliegue Continuo (CI/CD)** | Publicación y disponibilidad en la nube vía **GitHub Pages** con rutas relativas para compatibilidad estática absoluta. | Entorno de producción en GitHub |
-
----
-
-## Funcionalidades Principales
-
-* **Inicio (`index.html`):** Presentación de la marca, propuesta de valor, filosofía de diseño artesanal y sustentabilidad.
-* **Catálogo (`productos.html`):** Carga dinámica de productos vía `fetch()` desde `data/productos.json`, con búsqueda y filtrado en tiempo real.
-* **Detalle de Producto (`producto.html`):** Lectura dinámica por parámetro URL (`?id=...`), especificaciones técnicas y selector de cantidad.
-* **Carrito Persistente (`js/carrito.js`):** Drawer lateral accesible globalmente, persistencia en `localStorage`, actualización de cantidades, cálculo de totales y simulación de checkout.
-* **Contacto (`contacto.html`):** Formulario con validación en tiempo real (expresión regular para email), mensajes accesibles y simulación de envío.
-* **Navegación Responsive (`js/header.js`):** Menú hamburguesa accesible (`aria-expanded`) para dispositivos móviles con control de scroll.
-
----
-
-## Tecnologías Utilizadas
-
-* **HTML5:** Estructura semántica y accesibilidad con atributos WAI-ARIA.
-* **CSS3:** Diseño responsive (Mobile-First), CSS Grid, Flexbox y variables CSS (Custom Properties).
-* **JavaScript ES6+:** Módulos nativos (`import`/`export`), peticiones asíncronas con `fetch` y persistencia con `localStorage`.
-* **Recursos:** Tipografías de Google Fonts (*Playfair Display* e *Inter*) e imágenes optimizadas en formato WebP.
-
----
-
-## Cómo Correr el Proyecto
-
-Para evaluar el proyecto existen dos modalidades:
-
-### Modalidad 1: Visualización en Producción (Recomendada para Corrección Rápida)
-No requiere descargar código ni configurar entornos. El sitio se encuentra desplegado y plenamente operativo en:
-
-**[https://valentinapertile.github.io/FullStackDeveloper-1TT-Grupo3/](https://valentinapertile.github.io/FullStackDeveloper-1TT-Grupo3/)**
-
----
-
-### Modalidad 2: Ejecución en Entorno Local
-
-#### Paso 1: Clonar el repositorio
-```bash
-git clone https://github.com/ValentinaPertile/FullStackDeveloper-1TT-Grupo3.git
-cd FullStackDeveloper-1TT-Grupo3
-```
-
-#### Paso 2: Iniciar un servidor local (seleccionar la opción de preferencia)
-
-* **Opción A — Con Visual Studio Code (Live Server):**
-  1. Abrir la carpeta del proyecto en VS Code.
-  2. Instalar la extensión **Live Server** (creada por *Ritwick Dey*).
-  3. Hacer clic derecho sobre el archivo `index.html` y seleccionar **"Open with Live Server"** (o presionar el botón *"Go Live"* en la barra de estado inferior).
-  4. La aplicación se abrirá automáticamente en `http://127.0.0.1:5500/`.
-
-* **Opción B — Con Python 3:**
-  ```bash
-  python3 -m http.server 8000
-  ```
-  *(o `python -m http.server 8000` en sistemas Windows)*  
-  Luego ingresar a: `http://localhost:8000/`
-
-* **Opción C — Con Node.js (`npx`):**
-  ```bash
-  npx serve .
-  # o alternativamente:
-  npx http-server -p 8000 .
-  ```
-  Luego ingresar a la URL indicada en consola.
-
-* **Opción D — Con PHP:**
-  ```bash
-  php -S localhost:8000
-  ```
-  Luego ingresar a: `http://localhost:8000/`
-
----
-
-## Configuración del Despliegue en GitHub Pages (Opción A)
-
-El despliegue de esta plataforma fue configurado de manera directa y nativa utilizando el motor de **GitHub Pages**:
-
-1. En el repositorio de GitHub: `ValentinaPertile/FullStackDeveloper-1TT-Grupo3`.
-2. Se ingresó en la pestaña superior **Settings** $\rightarrow$ opción lateral **Pages** (dentro del grupo *Code and automation*).
-3. En la sección **Build and deployment**:
-   * **Source:** `Deploy from a branch`.
-   * **Branch:** Rama `main`, directorio `/ (root)`.
-   * Se guardaron los cambios con **Save**.
-4. GitHub Pages procesa automáticamente los archivos estáticos y publica la versión en:  
-   **`https://valentinapertile.github.io/FullStackDeveloper-1TT-Grupo3/`**
-
-> **Compatibilidad de Rutas:** Todos los recursos (estilos CSS, módulos JS, imágenes e ingesta del archivo JSON) fueron vinculados mediante **rutas relativas** estrictas, garantizando que el sitio funcione con absoluta fidelidad tanto en la raíz de un dominio como en subdirectorios de GitHub Pages.
-
----
-
-## Estructura de Directorios del Repositorio
-
-```text
-FullStackDeveloper-1TT-Grupo3/
-│
-├── css/
-│   ├── carrito.css             # Estilos del drawer del carrito y modal de checkout
-│   ├── contacto.css            # Estilos del formulario de contacto y mensajes de validación
-│   ├── header.css              # Estilos del encabezado, barra de navegación y menú hamburguesa
-│   ├── inicio.css              # Estilos de la landing page (hero, filosofía, sustentabilidad)
-│   ├── productos.css           # Estilos de la grilla de catálogo y ficha de detalle
-│   └── styles.css              # Design system global: reset, variables, tipografía y utilidades
-│
-├── data/
-│   └── productos.json          # Fuente de datos en formato JSON con la información del catálogo
-│
-├── img/                        # Recursos gráficos optimizados en formato WebP y logotipo en SVG
-│   ├── Aparador Uspallata.webp
-│   ├── Biblioteca Recoleta.webp
-│   ├── Butaca Mendoza.webp
-│   ├── Escritorio Costa.webp
-│   ├── Mesa Comedor Pampa.webp
-│   ├── Mesa de Centro Araucaria.webp
-│   ├── Mesa de Noche Aconcagua.webp
-│   ├── Silla de Trabajo Belgrano.webp
-│   ├── Sillas Córdoba.webp
-│   ├── Sillón Copacabana.webp
-│   ├── Sofá Patagonia.webp
-│   └── logo.svg
-│
-├── js/
-│   ├── carrito.js              # Módulo de carrito: persistencia en localStorage y checkout
-│   ├── contacto.js             # Módulo de contacto: validaciones en tiempo real y envío simulado
-│   ├── header.js               # Módulo de navegación: control del menú móvil y accesibilidad
-│   ├── producto.js             # Módulo de detalle: lectura de URLSearchParams y renderizado
-│   └── productos.js            # Módulo de catálogo: consumo de fetch, filtrado en vivo y tarjetas
-│
-├── contacto.html               # Vista de contacto institucional y formulario de consultas
-├── index.html                  # Vista principal (Home / Landing Page)
-├── producto.html               # Vista de ficha técnica y detalle de producto individual
-├── productos.html              # Vista de catálogo con buscador en tiempo real
-├── README.md                   # Documentación académica del proyecto
-└── .gitignore                  # Reglas de exclusión para control de versiones Git
-```
-
----
-
-## Conclusión y Declaración Académica
-
-El presente desarrollo ha sido elaborado como trabajo integrador final para la **Certificación Profesional en Full Stack Development del ITBA**, integrando los contenidos teóricos y prácticos impartidos a lo largo del módulo de **Desarrollo Front-End**.
-
-Desarrollado con dedicación por el **Grupo 3 — Comisión 1TT** © 2026.
+| **Arquitectura Desacoplada** | Separación limpia entre SPA (React/Vite) y servidor API REST (Node/Express). | `/client`, `/backend` |
+| **Base de Datos NoSQL** | Modelado e indexación de colecciones con Mongoose (`Product`, `Category`, `User`, `Order`, `Contact`). | `backend/src/core/models/*.js` |
+| **Seed de Base de Datos** | Script automatizado para poblar categorías y catálogo artesanal en MongoDB. | `backend/src/scripts/seed.js` |
+| **Resiliencia & Fallback** | El frontend y los endpoints responden con catálogo local si la base de datos no está disponible. | `client/src/pages/Products.jsx`, `backend/routes/productos.routes.js` |
+| **Autenticación Híbrida** | Login/Registro con JWT + soporte completo de Google OAuth 2.0 vía ventana popup. | `backend/src/modules/auth/*`, `client/src/hooks/useOAuth.js` |
+| **Estado Global** | Context API para carrito persistente (`CartProvider`) y sesión de usuario (`AuthProvider`). | `client/src/context/*.jsx` |
+| **Flujo Completo de Compra** | Drawer de carrito interactivo con formulario de checkout y generación de número de orden. | `client/src/components/Cart.jsx`, `backend/src/modules/orders/*` |
+| **Validación Robusta** | Validación con Zod tanto en formularios del cliente como en middlewares del servidor. | `client/src/validation/*`, `backend/src/modules/contact/contact.validation.js` |
+| **Responsive & Accesibilidad** | Menú hamburguesa accesible (`aria-expanded`), variables de diseño y layout responsive. | `client/src/components/layout/Navbar.jsx`, `client/src/index.css` |

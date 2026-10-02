@@ -2,10 +2,12 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ROUTES } from "../../routes/paths";
 import { useCart } from "../../hooks/useCart";
+import { useAuth } from "../../hooks/useAuth";
 import Cart from "../Cart";
 
 export default function Navbar() {
-  const { cartCount, openCart, closeCart } = useCart();
+  const { cartCount, openCart } = useCart();
+  const { user, isAuthenticated, logout } = useAuth();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
@@ -38,6 +40,10 @@ export default function Navbar() {
     }
   };
 
+  const isAuthPage =
+    location.pathname === ROUTES.LOGIN ||
+    location.pathname === ROUTES.REGISTER;
+
   return (
     <>
       <header className="site-header">
@@ -64,12 +70,22 @@ export default function Navbar() {
                 <Link
                   to={ROUTES.HOME}
                   onClick={(e) => handleNavClick(e, "#inicio")}
+                  className={location.pathname === ROUTES.HOME ? "active-link" : ""}
                 >
                   Inicio
                 </Link>
               </li>
               <li>
-                <Link to={ROUTES.PRODUCTS} onClick={closeMenu}>
+                <Link
+                  to={ROUTES.PRODUCTS}
+                  onClick={closeMenu}
+                  className={
+                    location.pathname === ROUTES.PRODUCTS ||
+                    location.pathname.startsWith("/product")
+                      ? "active-link"
+                      : ""
+                  }
+                >
                   Catálogo
                 </Link>
               </li>
@@ -90,17 +106,90 @@ export default function Navbar() {
                 </a>
               </li>
               <li>
-                <a
-                  href="/#contacto"
-                  onClick={(e) => handleNavClick(e, "#contacto")}
+                <Link
+                  to={ROUTES.CONTACT}
+                  onClick={closeMenu}
+                  className={
+                    location.pathname === ROUTES.CONTACT ||
+                    location.pathname === ROUTES.CONTACT_ALT
+                      ? "active-link"
+                      : ""
+                  }
                 >
                   Contacto
-                </a>
+                </Link>
+              </li>
+              <li className="mobile-only-auth">
+                {isAuthenticated ? (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      logout();
+                      closeMenu();
+                    }}
+                    className="w-full text-left font-medium text-red-600 py-2 cursor-pointer"
+                  >
+                    Cerrar sesión ({user?.nombre || user?.email?.split("@")[0]})
+                  </button>
+                ) : (
+                  <Link
+                    to={ROUTES.LOGIN}
+                    onClick={closeMenu}
+                    className={isAuthPage ? "active-link" : ""}
+                  >
+                    Iniciar sesión
+                  </Link>
+                )}
               </li>
             </ul>
           </nav>
 
           <div className="site-header__actions">
+            {isAuthenticated ? (
+              <div className="flex items-center gap-2">
+                <span
+                  className="hidden sm:inline-block text-xs font-medium text-stone-700 max-w-[120px] truncate"
+                  title={user?.email || "Usuario"}
+                >
+                  {user?.nombre || user?.email?.split("@")[0]}
+                </span>
+                <button
+                  type="button"
+                  onClick={logout}
+                  className="btn btn--auth text-xs py-1.5 px-3 cursor-pointer"
+                  aria-label="Cerrar sesión"
+                  title="Cerrar sesión"
+                >
+                  Salir
+                </button>
+              </div>
+            ) : (
+              <Link
+                to={ROUTES.LOGIN}
+                id="btn-login"
+                className={`btn btn--auth ${isAuthPage ? "is-active" : ""}`}
+                aria-label="Iniciar sesión"
+                onClick={closeMenu}
+              >
+                <svg
+                  className="btn-icon"
+                  viewBox="0 0 24 24"
+                  width="16"
+                  height="16"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                  <circle cx="12" cy="7" r="4" />
+                </svg>
+                <span>Ingresar</span>
+              </Link>
+            )}
+
             <button
               type="button"
               id="btn-abrir-carrito"
@@ -131,7 +220,7 @@ export default function Navbar() {
         </div>
       </header>
 
-      {openCart && <Cart />}
+      <Cart />
 
       {/* Overlay de fondo para el menú móvil */}
       <div
