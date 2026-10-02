@@ -11,6 +11,8 @@ import passport from "passport";
 
 import "./core/config/passport.js";
 
+import productosRoutes from "../routes/productos.routes.js";
+
 // Inicialización de aplicación
 const app = express();
 
@@ -48,6 +50,7 @@ app.get(`${API_PREFIX}/health`, (req, res) => {
 });
 
 app.use(`${API_PREFIX}/auth`, Auth);
+app.use(`${API_PREFIX}/productos`, productosRoutes);
 
 // Middleware de manejo de errores
 app.use(ErrorHandler);
