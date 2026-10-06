@@ -4,23 +4,19 @@ const { Schema } = mongoose;
 
 const ProductSchema = new Schema(
   {
-    slug: {
-      type: String,
-      trim: true,
-      index: true,
-    },
     name: {
       type: String,
       required: true,
       trim: true,
     },
+    slug: {
+      type: String,
+      trim: true,
+      index: true,
+    },
     description: {
       type: String,
       required: true,
-      trim: true,
-    },
-    longDescription: {
-      type: String,
       trim: true,
     },
     price: {
@@ -29,12 +25,17 @@ const ProductSchema = new Schema(
       min: 0,
     },
     category: {
-      type: Schema.Types.Mixed,
+      type: Schema.Types.ObjectId,
+      ref: "Category",
       required: true,
     },
-    specs: {
-      type: Array,
-      default: [],
+    metrics: {
+      type: Map,
+      of: String,
+    },
+    especifications: {
+      type: Map,
+      of: String,
     },
     stock: {
       type: Number,
@@ -42,10 +43,12 @@ const ProductSchema = new Schema(
       default: 0,
       min: 0,
     },
-    image_url: {
-      type: String,
-      required: true,
-    },
+    image_url: [
+      {
+        type: String,
+        required: true,
+      },
+    ],
     active: {
       type: Boolean,
       default: true,

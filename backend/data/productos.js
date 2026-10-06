@@ -1,376 +1,249 @@
-export const PRODUCTOS = [
+import mongoose from "mongoose";
+
+const CATEGORY_MOCK_ID = new mongoose.Types.ObjectId(
+  "64d5ecb8b392d70012345678",
+);
+
+export const PRODUCTS = [
   {
-    _id: "aconcagua",
-    name: "Mesa de Noche Aconcagua",
-    price: 500000,
-    category: "Dormitorio",
-    image_url: "/img/mesa_de_noche_aconcagua.webp",
-    description:
-      "Mesa de noche con cajón oculto y repisa inferior en roble certificado FSC®.",
-    longDescription:
-      "Mesa de noche con cajón oculto y repisa inferior en roble certificado FSC®. Su diseño limpio y funcional permite convivir con diferentes estilos de dormitorio, ofreciendo almacenamiento discreto y elegante para objetos personales.",
-    stock: 12,
-    specs: [
-      {
-        label: "Medidas",
-        valor: "45 × 35 × 60 cm",
-      },
-      {
-        label: "Materiales",
-        valor: "Roble macizo FSC®, herrajes soft-close",
-      },
-      {
-        label: "Acabado",
-        valor: "Barniz mate de poliuretano",
-      },
-      {
-        label: "Almacenamiento",
-        valor: "1 cajón + repisa inferior",
-      },
-      {
-        label: "Características",
-        valor: "Cajón con cierre suave",
-      },
-    ],
-  },
-  {
-    _id: "patagonia",
-    name: "Sofá Patagonia",
-    price: 900000,
-    category: "Living",
-    image_url: "/img/sofa_patagonia.webp",
-    description:
-      "Sofá de tres cuerpos tapizado en lino Warm Alabaster con patas cónicas de madera.",
-    longDescription:
-      "Sofá de tres cuerpos tapizado en lino Warm Alabaster con patas cónicas de madera. Los cojines combinan espuma de alta resiliencia con plumón reciclado, ofreciendo comodidad duradera y sostenible para el hogar moderno.",
-    stock: 5,
-    specs: [
-      {
-        label: "Medidas",
-        valor: "220 × 90 × 80 cm",
-      },
-      {
-        label: "Estructura",
-        valor: "Madera de eucalipto certificada FSC®",
-      },
-      {
-        label: "Tapizado",
-        valor: "Lino 100% natural premium",
-      },
-      {
-        label: "Relleno",
-        valor: "Espuma HR + plumón reciclado",
-      },
-      {
-        label: "Sostenibilidad",
-        valor: "Materiales 100% reciclables",
-      },
-    ],
-  },
-  {
-    _id: "pampa",
-    name: "Mesa Comedor Pampa",
-    price: 980000,
-    category: "Comedor",
-    image_url: "/img/mesa_comedor_pampa.webp",
-    description:
-      "Mesa extensible de roble macizo con tablero biselado y sistema de apertura suave.",
-    longDescription:
-      "Mesa extensible de roble macizo con tablero biselado y sistema de apertura suave. Su diseño robusto y elegante se adapta perfectamente a reuniones íntimas o grandes celebraciones familiares, extendiéndose de 6 a 10 comensales.",
-    stock: 7,
-    specs: [
-      {
-        label: "Medidas",
-        valor: "160-240 × 90 × 75 cm",
-      },
-      {
-        label: "Materiales",
-        valor: "Roble macizo FSC®, mecanismo alemán",
-      },
-      {
-        label: "Acabado",
-        valor: "Aceite-cera natural",
-      },
-      {
-        label: "Capacidad",
-        valor: "6-10 comensales",
-      },
-      {
-        label: "Extensión",
-        valor: "Sistema de mariposa central",
-      },
-    ],
-  },
-  {
-    _id: "cordoba",
-    name: "Sillas Córdoba",
-    price: 300000,
-    category: "Comedor",
-    image_url: "/img/silla_cordoba.webp",
-    description:
-      "Set de cuatro sillas apilables en contrachapado moldeado de nogal.",
-    longDescription:
-      "Set de cuatro sillas apilables en contrachapado moldeado de nogal y estructura tubular pintada en Sage Green. Su diseño ergonómico y materiales de calidad garantizan comodidad y durabilidad en el uso diario.",
-    stock: 15,
-    specs: [
-      {
-        label: "Medidas",
-        valor: "45 × 52 × 80 cm (cada una)",
-      },
-      {
-        label: "Materiales",
-        valor: "Contrachapado nogal, tubo de acero",
-      },
-      {
-        label: "Acabado",
-        valor: "Laca mate, pintura epoxi",
-      },
-      {
-        label: "Apilables",
-        valor: "Hasta 6 sillas",
-      },
-      {
-        label: "Incluye",
-        valor: "Set de 4 sillas",
-      },
-    ],
-  },
-  {
-    _id: "costa",
-    name: "Escritorio Costa",
-    price: 780000,
-    category: "Oficina",
-    image_url: "/img/escritorio_costa.webp",
-    description:
-      "Escritorio compacto con cajón organizado y tapa pasacables integrada en bambú laminado.",
-    longDescription:
-      "Escritorio compacto con cajón organizado y tapa pasacables integrada en bambú laminado. Ideal para espacios de trabajo en casa, combina funcionalidad moderna con estética minimalista y sostenible.",
-    stock: 8,
-    specs: [
-      {
-        label: "Medidas",
-        valor: "120 × 60 × 75 cm",
-      },
-      {
-        label: "Materiales",
-        valor: "Bambú laminado, herrajes ocultos",
-      },
-      {
-        label: "Acabado",
-        valor: "Laca mate resistente",
-      },
-      {
-        label: "Almacenamiento",
-        valor: "1 cajón con organizador",
-      },
-      {
-        label: "Cables",
-        valor: "Pasacables integrado",
-      },
-    ],
-  },
-  {
-    _id: "belgrano",
-    name: "Silla de Trabajo Belgrano",
-    price: 245000,
-    category: "Oficina",
-    image_url: "/img/silla_de_trabajo_belgrano.webp",
-    description:
-      "Silla ergonómica regulable en altura con respaldo de malla transpirable.",
-    longDescription:
-      "Silla ergonómica regulable en altura con respaldo de malla transpirable y asiento tapizado en tejido reciclado. Diseñada para largas jornadas de trabajo con máximo confort y apoyo lumbar.",
-    stock: 10,
-    specs: [
-      {
-        label: "Medidas",
-        valor: "60 × 60 × 90-100 cm",
-      },
-      {
-        label: "Materiales",
-        valor: "Malla técnica, tejido reciclado",
-      },
-      {
-        label: "Acabado",
-        valor: "Base cromada, tapizado premium",
-      },
-      {
-        label: "Regulación",
-        valor: "Altura + inclinación de respaldo",
-      },
-      {
-        label: "Certificación",
-        valor: "Ergonomía europea EN 1335",
-      },
-    ],
-  },
-  {
-    _id: "uspallata",
     name: "Aparador Uspallata",
-    price: 400000,
-    category: "Living",
-    image_url: "/img/aparador_uspallata.webp",
     description:
-      "Aparador de seis puertas fabricado en nogal sostenible con tiradores metálicos en acabado latón.",
-    longDescription:
       "Aparador de seis puertas fabricado en nogal sostenible con tiradores metálicos en acabado latón. Su silueta minimalista realza el veteado natural de la madera, creando una pieza que combina funcionalidad y elegancia atemporal para espacios contemporáneos.",
-    stock: 4,
-    specs: [
-      {
-        label: "Medidas",
-        valor: "180 × 45 × 75 cm",
-      },
-      {
-        label: "Materiales",
-        valor: "Nogal macizo FSC®, herrajes de latón",
-      },
-      {
-        label: "Acabado",
-        valor: "Aceite natural ecológico",
-      },
-      {
-        label: "Peso",
-        valor: "68 kg",
-      },
-      {
-        label: "Capacidad",
-        valor: "6 compartimentos interiores",
-      },
-    ],
+    price: 79.99,
+    category: CATEGORY_MOCK_ID,
+    metrics: {
+      ancho: "120 cm",
+      profundidad: "40 cm",
+      alto: "80 cm",
+      peso: "68 kg"
+    },
+    especifications: {
+      materiales: "Nogal macizo FSC®, Herrajes de latón",
+      acabado: "Aceite natural ecológico",
+      capacidad: "6 compartimientos interiores",
+    },
+    stock: 15,
+    image_url: ["./img/Aparador Uspallata.webp"],
+    active: true,
   },
   {
-    _id: "recoleta",
     name: "Biblioteca Recoleta",
-    price: 232000,
-    category: "Living",
-    image_url: "/img/biblioteca_recoleta.webp",
     description:
-      "Sistema modular de estantes abierto que combina estructura de acero Sage Green y repisas en roble claro.",
-    longDescription:
       "Sistema modular de estantes abierto que combina estructura de acero Sage Green y repisas en roble claro. Perfecta para colecciones y objetos de diseño, su diseño versátil se adapta a cualquier espacio contemporáneo con elegancia funcional.",
-    stock: 6,
-    specs: [
-      {
-        label: "Medidas",
-        valor: "100 × 35 × 200 cm",
-      },
-      {
-        label: "Materiales",
-        valor: "Estructura de acero, estantes de roble",
-      },
-      {
-        label: "Acabado",
-        valor: "Laca mate ecológica",
-      },
-      {
-        label: "Capacidad",
-        valor: "45 kg por estante",
-      },
-      {
-        label: "Modulares",
-        valor: "5 estantes ajustables",
-      },
-    ],
-  },
-  {
-    _id: "mendoza",
-    name: "Butaca Mendoza",
-    price: 290000,
-    category: "Living",
-    image_url: "/img/butaca_mendoza.webp",
-    description:
-      "Butaca tapizada en bouclé Dusty Rose con base de madera de guatambú.",
-    longDescription:
-      "Butaca tapizada en bouclé Dusty Rose con base de madera de guatambú. El respaldo curvo abraza el cuerpo y ofrece máximo confort, mientras que su diseño orgánico aporta calidez y sofisticación a cualquier ambiente contemporáneo.",
+    price: 189.99,
+    category: CATEGORY_MOCK_ID,
+    metrics: {
+      ancho: "100 cm",
+      profundidad: "35 cm",
+      alto: "200 cm",
+      peso: "42 kg"
+    },
+    especifications: {
+      materiales: "Estructura de acero, Estantes de roble",
+      acabado: "Laca mate ecológica",
+      capacidad: "45 kg por estante",
+      modulares: "5 estantes ajustables",
+    },
     stock: 8,
-    specs: [
-      {
-        label: "Medidas",
-        valor: "80 × 75 × 85 cm",
-      },
-      {
-        label: "Materiales",
-        valor: "Guatambú macizo, tela bouclé",
-      },
-      {
-        label: "Acabado",
-        valor: "Cera vegetal, tapizado premium",
-      },
-      {
-        label: "Tapizado",
-        valor: "Repelente al agua y manchas",
-      },
-      {
-        label: "Confort",
-        valor: "Espuma alta densidad",
-      },
-    ],
+    image_url: ["./img/Biblioteca Recoleta.webp"],
+    active: true,
   },
   {
-    _id: "copacabana",
+    name: "Butaca Mendoza",
+    description:
+      "Butaca tapizada en bouclé Dusty Rose con base de madera de guatambú. El respaldo curvo abraza el cuerpo y ofrece máximo confort, mientras que su diseño orgánico aporta calidez y sofisticación a cualquier ambiente contemporáneo.",
+    price: 129.99,
+    category: CATEGORY_MOCK_ID,
+    metrics: {
+      ancho: "80 cm",
+      profundidad: "75 cm",
+      alto: "85 cm",
+      peso: "25 kg"
+    },
+    especifications: {
+      materiales: "Guatambú macizo, Tela bouclé",
+      acabado: "Cera vegetal, tapizado premium",
+      tapizado: "Repelente al agua y manchas",
+      confort: "Espuma alta densidad",
+    },
+    stock: 12,
+    image_url: ["./img/Butaca Mendoza.webp"],
+    active: true,
+  },
+  {
     name: "Sillón Copacabana",
-    price: 580000,
-    category: "Living",
-    image_url: "/img/sillon_copacabana.webp",
     description:
-      "Sillón lounge en cuero cognac con base giratoria en acero Burnt Sienna.",
-    longDescription:
       "Sillón lounge en cuero cognac con base giratoria en acero Burnt Sienna. Inspirado en la estética brasilera moderna de los 60, combina comodidad excepcional con un diseño icónico que trasciende tendencias y épocas.",
-    stock: 3,
-    specs: [
-      {
-        label: "Medidas",
-        valor: "90 × 85 × 95 cm",
-      },
-      {
-        label: "Materiales",
-        valor: "Cuero curtido vegetal, acero pintado",
-      },
-      {
-        label: "Acabado",
-        valor: "Cuero anilina premium",
-      },
-      {
-        label: "Rotación",
-        valor: "360° silenciosa y suave",
-      },
-      {
-        label: "Garantía",
-        valor: "10 años en estructura",
-      },
-    ],
+    price: 219.99,
+    category: CATEGORY_MOCK_ID,
+    metrics: {
+      ancho: "90 cm",
+      profundidad: "85 cm",
+      alto: "95 cm",
+      peso: "30 kg"
+    },
+    especifications: {
+      materiales: "Cuero curtido vegetal, Acero pintado",
+      acabado: "Cuero anilina premium",
+      rotacion: "360° silenciosa y suave",
+      garantia: "10 años en estructura",
+    },
+    stock: 5,
+    image_url: ["./img/Sillón Copacabana.webp"],
+    active: true,
   },
   {
-    _id: "araucaria",
     name: "Mesa de Centro Araucaria",
-    price: 240000,
-    category: "Living",
-    image_url: "/img/mesa_de_centro_araucaria.webp",
     description:
-      "Mesa de centro con sobre circular de mármol Patagonia y base de tres patas en madera de nogal.",
-    longDescription:
       "Mesa de centro con sobre circular de mármol Patagonia y base de tres patas en madera de nogal. Su diseño minimalista se convierte en el punto focal perfecto para cualquier sala de estar contemporánea, combinando la frialdad del mármol con la calidez de la madera.",
-    stock: 9,
-    specs: [
-      {
-        label: "Medidas",
-        valor: "90 × 90 × 45 cm",
-      },
-      {
-        label: "Materiales",
-        valor: "Sobre de mármol Patagonia, patas de nogal",
-      },
-      {
-        label: "Acabado",
-        valor: "Mármol pulido, aceite natural en madera",
-      },
-      {
-        label: "Peso",
-        valor: "42 kg",
-      },
-      {
-        label: "Carga máxima",
-        valor: "25 kg distribuidos",
-      },
-    ],
+    price: 99.99,
+    category: CATEGORY_MOCK_ID,
+    metrics: {
+      ancho: "90 cm",
+      profundidad: "90 cm",
+      alto: "45 cm",
+      peso: "42 kg"
+    },
+    especifications: {
+      materiales: "Sobre de mármol Patagonia, Patas de nogal",
+      acabado: "Mármol pulido, aceite natural en madera",
+      cargaMaxima: "25 kg distribuidos",
+    },
+    stock: 10,
+    image_url: ["./img/Mesa de Centro Araucaria.webp"],
+    active: true,
+  },
+  {
+    name: "Mesa de Noche Aconcagua",
+    description:
+      "Mesa de noche con cajón oculto y repisa inferior en roble certificado FSC®. Su diseño limpio y funcional permite convivir con diferentes estilos de dormitorio, ofreciendo almacenamiento discreto y elegante para objetos personales.",
+    price: 64.99,
+    category: CATEGORY_MOCK_ID,
+    metrics: {
+      ancho: "45 cm",
+      profundidad: "35 cm",
+      alto: "60 cm",
+      peso: "20 kg"
+    },
+    especifications: {
+      materiales: "Roble macizo FSC®, Herrajes soft-close",
+      acabado: "Barniz mate de poliuretano",
+      almacenamiento: "1 cajón + repisa inferior",
+      caracteristicas: "Cajón con cierre suave",
+    },
+    stock: 20,
+    image_url: ["./img/Mesa de Noche Aconcagua.webp"],
+    active: true,
+  },
+  {
+    name: "Sofá Patagonia",
+    description:
+      "Sofá de tres cuerpos tapizado en lino Warm Alabaster con patas cónicas de madera. Los cojines combinan espuma de alta resiliencia con plumón reciclado, ofreciendo comodidad duradera y sostenible para el hogar moderno.",
+    price: 299.99,
+    category: CATEGORY_MOCK_ID,
+    metrics: {
+      ancho: "220 cm",
+      profundidad: "90 cm",
+      alto: "80 cm",
+      peso: "50 kg"
+    },
+    especifications: {
+      materiales:
+        "Madera de eucalipto certificada FSC®, Lino 100% natural premium, Espuma HR + plumón reciclado",
+      tapizado: "Lino 100% natural premium",
+      relleno: "Espuma HR + plumón reciclado",
+      sostenibilidad: "Materiales 100% reciclables",
+    },
+    stock: 4,
+    image_url: ["./img/Sofá Patagonia.webp"],
+    active: true,
+  },
+  {
+    name: "Mesa Comedor Pampa",
+    description:
+      "Mesa extensible de roble macizo con tablero biselado y sistema de apertura suave. Su diseño robusto y elegante se adapta perfectamente a reuniones íntimas o grandes celebraciones familiares, extendiéndose de 6 a 10 comensales.",
+    price: 249.99,
+    category: CATEGORY_MOCK_ID,
+    metrics: {
+      ancho: "160-240 cm",
+      profundidad: "90 cm",
+      alto: "75 cm",
+      peso: "60 kg"
+    },
+    especifications: {
+      materiales: "Roble macizo FSC®, Mecanismo alemán",
+      acabado: "Aceite-cera natural",
+      capacidad: "6-10 comensales",
+      extension: "Sistema de mariposa central",
+    },
+    stock: 6,
+    image_url: ["./img/Mesa Comedor Pampa.webp"],
+    active: true,
+  },
+  {
+    name: "Sillas Córdoba",
+    description:
+      "Set de cuatro sillas apilables en contrachapado moldeado de nogal y estructura tubular pintada en Sage Green. Su diseño ergonómico y materiales de calidad garantizan comodidad y durabilidad en el uso diario, perfectas para comedores contemporáneos.",
+    price: 149.99,
+    category: CATEGORY_MOCK_ID,
+    metrics: {
+      ancho: "45 cm",
+      profundidad: "52 cm",
+      alto: "80 cm",
+      peso: "18 kg"
+    },
+    especifications: {
+      materiales: "Contrachapado nogal, Tubo de acero",
+      acabado: "Laca mate, pintura epoxi",
+      apilables: "Hasta 6 sillas",
+      incluye: "Set de 4 sillas",
+    },
+    stock: 18,
+    image_url: ["./img/Sillas Córdoba.webp"],
+    active: true,
+  },
+  {
+    name: "Escritorio Costa",
+    description:
+      "Escritorio compacto con cajón organizado y tapa pasacables integrada en bambú laminado. Ideal para espacios de trabajo en casa, combina funcionalidad moderna con estética minimalista y sostenible, perfecto para el trabajo remoto.",
+    price: 179.99,
+    category: CATEGORY_MOCK_ID,
+    metrics: {
+      ancho: "120 cm",
+      profundidad: "60 cm",
+      alto: "75 cm",
+      peso: "25 kg"
+    },
+    especifications: {
+      materiales: "Bambú laminado, Herrajes ocultos",
+      acabado: "Laca mate resistente",
+      almacenamiento: "1 cajón con organizador",
+      cables: "Pasacables integrado",
+    },
+    stock: 7,
+    image_url: ["./img/Escritorio Costa.webp"],
+    active: true,
+  },
+  {
+    name: "Silla de Trabajo Belgrano",
+    description:
+      "Silla ergonómica regulable en altura con respaldo de malla transpirable y asiento tapizado en tejido reciclado. Diseñada para largas jornadas de trabajo con máximo confort y apoyo lumbar, ideal para oficinas en casa y espacios de coworking.",
+    price: 139.99,
+    category: CATEGORY_MOCK_ID,
+    metrics: {
+      ancho: "60 cm",
+      profundidad: "60 cm",
+      alto: "90-100 cm",
+      peso: "20 kg"
+    },
+    especifications: {
+      materiales: "Malla técnica, Tejido reciclado",
+      acabado: "Base cromada, tapizado premium",
+      regulacion: "Altura + inclinación respaldo",
+      certificacion: "Ergonomía europea EN 1335",
+    },
+    stock: 14,
+    image_url: ["./img/Silla de Trabajo Belgrano.webp"],
+    active: true,
   },
 ];

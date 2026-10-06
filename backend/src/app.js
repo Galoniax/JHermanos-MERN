@@ -11,12 +11,10 @@ import passport from "passport";
 
 import "./core/config/passport.js";
 
-import productosRoutes from "../routes/productos.routes.js";
-
 // Inicialización de aplicación
 const app = express();
 
-app.set("trust proxy", 1); // Confía en el proxy (Vercel, Nginx, etc.)
+app.set("trust proxy", 1); // Confía en el proxy (Rate-limits, Nginx, etc.)
 
 const origins = [FRONTEND_URL];
 
@@ -25,7 +23,12 @@ app.use(
   cors({
     origin: origins,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization", "X-Auth-Token", "X-Client-System"], // Headers Autorizados
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+      "X-Auth-Token",
+      "X-Client-System",
+    ], // Headers Autorizados
     exposedHeaders: ["X-Auth-Token"], // Headers Expuestos a frontend
     credentials: true,
   }),
@@ -51,7 +54,6 @@ app.get(`${API_PREFIX}/health`, (req, res) => {
 
 app.use(`${API_PREFIX}/auth`, Auth);
 app.use(`${API_PREFIX}/contact`, Contact);
-app.use(`${API_PREFIX}/productos`, productosRoutes);
 app.use(`${API_PREFIX}/orders`, Orders);
 
 // Middleware de manejo de errores
