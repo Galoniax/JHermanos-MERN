@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { validateContact } from "../validation/contact.validation";
 import { sendContact } from "../services/contact.api";
 
 const initialForm = {
@@ -49,10 +48,6 @@ export default function Contact() {
       mensaje: formData.mensaje.trim(),
     };
 
-    const { valid, errors: nextErrors } = validateContact(valores);
-    setErrors(nextErrors);
-
-    if (!valid) return;
 
     setEnviando(true);
 

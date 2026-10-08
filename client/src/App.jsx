@@ -6,6 +6,8 @@ import { CartProvider } from "./context/CartProvider";
 import { AuthProvider } from "./context/AuthProvider";
 import Layout from "./components/layout/Layout";
 
+import { ReactLenis } from "lenis/react";
+
 // TanStack Query Client Setup
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -20,13 +22,37 @@ const queryClient = new QueryClient({
 
 function AppRoutesContent() {
   return (
-    <Layout>
-      <Routes>
-        {appRoutes.map((route, idx) => (
-          <Route key={idx} path={route.path} element={route.element} />
-        ))}
-      </Routes>
-    </Layout>
+    <>
+      <ReactLenis root options={{ duration: 1.3 }} />
+
+      {/**
+       * <Suspense fallback={ <AnimatePresence mode='wait'><LoaderScreen /></AnimatePresence>}>
+       */}
+
+      <Layout>
+        <Routes>
+          {appRoutes.map((route, idx) => {
+            if (route.children) {
+              return (
+                <Route key={idx} element={route.element}>
+                  {route.children.map((childRoute, childIdx) => (
+                    <Route
+                      key={childIdx}
+                      path={childRoute.path}
+                      element={childRoute.element}
+                    />
+                  ))}
+                </Route>
+              );
+            }
+
+            return (
+              <Route key={idx} path={route.path} element={route.element} />
+            );
+          })}
+        </Routes>
+      </Layout>
+    </>
   );
 }
 

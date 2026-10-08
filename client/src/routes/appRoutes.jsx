@@ -1,10 +1,7 @@
-import Contact from "../pages/Contact";
-import Home from "../pages/Home";
-import Login from "../pages/Login";
-import Products from "../pages/Products";
-import ProductDetail from "../pages/ProductDetail";
-import Register from "../pages/Register";
+import { Contact, Home, Login, ProductDetail, Products, Register } from "../pages";
 import { ROUTES } from "./paths";
+
+import PublicRoutes from "./guards/PublicRoutes";
 
 export const appRoutes = [
   {
@@ -16,19 +13,25 @@ export const appRoutes = [
     element: <Products />,
   },
   {
-    path: "/product/:id",
+    path: "/product/:id/:slug?",
     element: <ProductDetail />,
   },
   {
     path: ROUTES.CONTACT,
     element: <Contact />,
   },
+
   {
-    path: ROUTES.LOGIN,
-    element: <Login />,
-  },
-  {
-    path: ROUTES.REGISTER,
-    element: <Register />,
+    element: <PublicRoutes />,
+    children: [
+      {
+        path: ROUTES.LOGIN,
+        element: <Login />,
+      },
+      {
+        path: ROUTES.REGISTER,
+        element: <Register />,
+      },
+    ],
   },
 ];

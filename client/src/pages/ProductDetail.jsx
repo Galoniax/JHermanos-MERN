@@ -1,82 +1,82 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { ROUTES } from "../routes/paths";
 import { formatPrice } from "../utils/formatPrice";
 import { useCart } from "../hooks/useCart";
-import { API_URL } from "../api/config/config";
+import { useQuery } from "@tanstack/react-query";
+import { getProductById } from "@/services/product.api";
 
-import { PRODUCTOS } from "../../../backend/data/productos";
+import { FaCheck, FaPlus } from "react-icons/fa6";
+import { FaMinus } from "react-icons/fa6";
+import Loader from "@/components/ui/feedback/Loader";
+
+import { FaChevronRight } from "react-icons/fa";
+
+function Specification({ title, value }) {
+  const [isOpen, setIsOpen] = useState(true);
+
+  const handleToggle = () => {
+    setIsOpen((prev) => !prev);
+  };
+
+  return (
+    <div className="border-t border-parch/20 py-4 w-full">
+      <div className="flex items-center justify-between">
+        <button
+          type="button"
+          aria-expanded={isOpen}
+          aria-controls={`spec-${title}`}
+          onClick={handleToggle}
+          className="flex w-full items-center justify-between cursor-pointer"
+        >
+          <h3 className="text-parch/90 text-lg font-bold capitalize">
+            {title}:
+          </h3>
+          <span className="text-parch">
+            {isOpen ? (
+              <FaMinus className="text-parch/40" size={16} />
+            ) : (
+              <FaPlus className="text-parch/40" size={16} />
+            )}
+          </span>
+        </button>
+      </div>
+
+      {isOpen && <p className="text-parch/40 text-base">{value}</p>}
+    </div>
+  );
+}
 
 export default function ProductDetail() {
   const { id } = useParams();
   const { addToCart } = useCart();
 
-  const [product, setProduct] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [cantidad, setCantidad] = useState(1);
-  const [added, setAdded] = useState(false);
 
-  useEffect(() => {
-    let isMounted = true;
+  const [status, setStatus] = useState("idle");
 
-    const fetchProduct = async () => {
-      // Primero buscar en catálogo local para respuesta instantánea
-      const local = PRODUCTOS.find(
-        (p) => String(p._id) === String(id) || String(p.id) === String(id)
-      );
-
-      try {
-        const response = await fetch(`${API_URL}/productos/${id}`);
-        if (response.ok) {
-          const data = await response.json();
-          const item = data.data ?? data;
-          if (isMounted && item) {
-            setProduct({
-              ...item,
-              _id: item._id || item.id || id,
-              image_url: item.image_url || (item.imagen ? `/${item.imagen}` : local?.image_url),
-              longDescription: item.longDescription || item.descripcionLarga || item.description || local?.longDescription,
-              specs: item.specs || local?.specs || [],
-            });
-            setLoading(false);
-            return;
-          }
-        }
-      } catch (err) {
-        console.warn("API de producto no disponible, usando datos locales:", err.message);
-      }
-
-      if (isMounted) {
-        setProduct(local || null);
-        setLoading(false);
-      }
-    };
-
-    fetchProduct();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [id]);
+  const { data: product, isLoading } = useQuery({
+    queryKey: ["product", id],
+    queryFn: async () => {
+      const response = await getProductById(id);
+      return response.data;
+    },
+    enabled: !!id,
+  });
 
   useEffect(() => {
     if (product) {
-      document.title = `${product.name || product.nombre} — Hermanos Jota`;
-    } else {
-      document.title = "Producto — Hermanos Jota";
+      document.title = `Hermanos Jota - ${product.name}`;
+
+      if (product.slug) {
+        window.history.replaceState(null, "", `/product/${id}/${product.slug}`);
+      }
     }
-  }, [product]);
 
-  const handleAddToCart = () => {
-    if (!product) return;
-
-    addToCart(product, cantidad);
-    setAdded(true);
-
-    setTimeout(() => {
-      setAdded(false);
-    }, 1500);
-  };
+    return () => {
+      document.title = "Hermanos Jota";
+    };
+  }, [product, id]);
 
   const handleIncrement = () => {
     setCantidad((prev) => prev + 1);
@@ -85,14 +85,6 @@ export default function ProductDetail() {
   const handleDecrement = () => {
     setCantidad((prev) => (prev > 1 ? prev - 1 : 1));
   };
-
-  if (loading) {
-    return (
-      <main className="wrap py-16 text-center">
-        <p className="font-inter text-stone-600">Cargando producto…</p>
-      </main>
-    );
-  }
 
   if (!product) {
     return (
@@ -111,123 +103,140 @@ export default function ProductDetail() {
   }
 
   const sinStock = product.stock <= 0;
+  const category = Object.keys(product?.especifications || {});
 
   return (
-    <main className="wrap">
-      <article className="detalle">
-        {/* Imagen del producto */}
-        <div className="detalle__imagen">
-          <img
-            src={product.image_url || product.imagen}
-            alt={`${product.name} — ${product.category || "Hermanos Jota"}`}
-            loading="eager"
-            fetchPriority="high"
-          />
+    <main className="relative min-h-screen bg-pitch p-10 sm:p-15 lg:p-20">
+      <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/black-mamba.png')] bg-pitch bg-center opacity-70 pointer-events-none" />
+
+      {/** Detalle de producto */}
+      <div className="relative flex flex-col max-w-[80%] mx-auto gap-8">
+        {/** Breadcrumb */}
+        <div className="flex items-center gap-2 text-[11px] uppercase font-bold tracking-widest">
+          <Link
+            to={ROUTES.PRODUCTS}
+            className="hover:underline decoration-parch/80 underline-offset-4"
+          >
+            <span className="text-parch/80">Catálogo</span>
+          </Link>
+          <FaChevronRight className="text-parch/50" size={10} />
+
+          <span className="text-parch/40">{product.category}</span>
         </div>
 
-        {/* Información y compra */}
-        <div className="detalle__info">
-          {product.category && (
-            <p className="detalle__categoria">{product.category}</p>
-          )}
+        <div className=" flex flex-col lg:flex-row justify-center items-start  *:flex-1 gap-8">
+          {/* Imagen del producto */}
+          <div className="w-full min-h-[800px] border border-parch/40">
+            <img
+              src={product.image_url}
+              alt={`Imágen de ${product.name}`}
+              loading="eager"
+              fetchPriority="high"
+            />
+          </div>
 
-          <h1 className="detalle__nombre">{product.name}</h1>
-          <p className="detalle__precio">{formatPrice(product.price)}</p>
+          {/* Información y compra */}
+          <section className="flex flex-col gap-5 w-full h-full">
+            <h1 className="text-5xl font-bold text-parch">{product.name}</h1>
+            {product.discount > 0 && (
+              <p className="text-parch text-base font-semibold">
+                {formatPrice(
+                  product.finalPrice?.$numberDecimal || product.finalPrice,
+                )}
+              </p>
+            )}
 
-          <p className="detalle__descripcion">
-            {product.longDescription || product.description}
-          </p>
-
-          {/* Especificaciones técnicas */}
-          {product.specs && product.specs.length > 0 && (
-            <div className="mb-6">
-              <h2 className="text-xs font-semibold uppercase tracking-wider text-[var(--tinta-suave)] mb-2 font-inter">
-                Especificaciones técnicas
-              </h2>
-              <dl className="product-card__specs">
-                {product.specs.map((spec, index) => (
-                  <div key={index}>
-                    <dt>{spec.label}</dt>
-                    <dd>{spec.valor}</dd>
-                  </div>
-                ))}
-              </dl>
-            </div>
-          )}
-
-          {/* Selector de cantidad y botón de compra */}
-          <div className="detalle__acciones">
-            <div className="detalle__cantidad" aria-label="Selector de cantidad">
-              <button
-                type="button"
-                onClick={handleDecrement}
-                disabled={sinStock || cantidad <= 1}
-                aria-label="Disminuir cantidad"
-              >
-                −
-              </button>
-              <input
-                type="number"
-                id="cantidad"
-                min="1"
-                value={cantidad}
-                onChange={(e) => {
-                  const val = parseInt(e.target.value, 10);
-                  setCantidad(isNaN(val) || val < 1 ? 1 : val);
-                }}
-                disabled={sinStock}
-                aria-label="Cantidad seleccionada"
-              />
-              <button
-                type="button"
-                onClick={handleIncrement}
-                disabled={sinStock}
-                aria-label="Aumentar cantidad"
-              >
-                +
-              </button>
-            </div>
-
-            <button
-              type="button"
-              id="btn-agregar-detalle"
-              className="btn btn--primary detalle__btn-add"
-              onClick={handleAddToCart}
-              disabled={sinStock}
+            <p
+              className={`${product.discount > 0 ? "line-through text-gray-500" : "text-parch text-2xl font-bold tracking-tight"}`}
             >
-              {sinStock
-                ? "Sin stock"
-                : added
-                ? "Añadido ✓"
-                : "Añadir al carrito"}
-            </button>
-          </div>
+              {formatPrice(product.price?.$numberDecimal || product.price)}
+            </p>
 
-          {/* Badges de calidad y sustentabilidad */}
-          <div className="detalle__badge">
-            <svg
-              className="w-4 h-4 text-emerald-700 shrink-0"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-            <span>Maderas nativas certificadas FSC® · Garantía artesanal de 10 años</span>
-          </div>
+            <p className="text-parch/50 font-light text-lg">
+              {product.description}
+            </p>
 
-          <div className="mt-8 pt-4 border-t border-[var(--borde)]">
-            <Link to={ROUTES.PRODUCTS} className="detalle__volver">
-              ← Volver al catálogo completo
-            </Link>
-          </div>
+            <div className="flex flex-col gap-3">
+              <div className="flex gap-3">
+                <div className="flex items-center gap-5 *:p-1 py-2 px-4 border border-parch/20 *:text-parch">
+                  <button
+                    aria-label="Decrementar cantidad"
+                    className="cursor-pointer"
+                    onClick={handleDecrement}
+                  >
+                    -
+                  </button>
+                  <span className="text-xs">{cantidad}</span>
+                  <button
+                    aria-label="Incrementar cantidad"
+                    className="cursor-pointer"
+                    onClick={handleIncrement}
+                  >
+                    +
+                  </button>
+                </div>
+
+                <button
+                  disabled={status === "loading" || sinStock}
+                  onClick={() => {
+                    setStatus("loading");
+                    addToCart(product, cantidad);
+
+                    setTimeout(() => {
+                      setStatus("success");
+
+                      setTimeout(() => setStatus("idle"), 2000);
+                    }, 2000);
+                  }}
+                  className={`cursor-pointer uppercase flex items-center justify-center gap-2 w-full hover:bg-parch/90 transition-colors text-sm font-medium py-4 bg-parch text-gray/80`}
+                >
+                  {status === "idle" && "Agregar al carrito"}
+                  {status === "loading" && (
+                    <>
+                      <Loader size={14} color=" text-gray/80" />
+                      Agregando a tu carrito...
+                    </>
+                  )}
+                  {status === "success" && (
+                    <>
+                      <FaCheck className="text-gray/80" size={16} />
+                      Producto agregado
+                    </>
+                  )}
+                </button>
+              </div>
+              <button
+                onClick={() => addToCart(product, cantidad)}
+                className="cursor-pointer uppercase text-parch bg-bordeau hover:bg-bordeau/80 transition-colors w-full text-sm font-medium py-4"
+              >
+                Comprar ahora - Ir a checkout →
+              </button>
+
+              <div className="flex gap-2">
+                <span className="text-parch/70 text-sm">
+                  {product.stock <= 0 ? "Sin stock" : "En stock"}
+                </span>
+                <span>carrito</span>
+              </div>
+            </div>
+
+            {/* Categorias del producto */}
+            {category.length > 0 && (
+              <div className="flex flex-col gap-1">
+                {category.map((cat) => {
+                  return (
+                    <Specification
+                      key={cat}
+                      title={cat}
+                      value={product.especifications[cat]}
+                    />
+                  );
+                })}
+              </div>
+            )}
+          </section>
         </div>
-      </article>
+      </div>
     </main>
   );
 }

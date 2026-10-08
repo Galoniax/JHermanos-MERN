@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ROUTES } from "../routes/paths";
-import AuthSection from "../components/auth/AuthSection";
+import AuthSection from "../components/features/auth/AuthSection";
 import auth_bg from "../assets/images/auth_bg.webp";
 import { useOAuth } from "../hooks/useOAuth";
 import { useAuth } from "../hooks/useAuth";
@@ -14,7 +14,7 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPass, setShowPass] = useState(false);
-  
+
   const [submitting, setSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -56,13 +56,13 @@ export default function Login() {
           className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none"
         />
 
-        <section className="relative z-20 w-full bg-[var(--superficie)] rounded-xl p-6 sm:p-8 border border-black/10 flex flex-col justify-center">
+        <section className="relative z-20 w-full bg-parch rounded-xl p-6 sm:p-8 border border-pitch/10 flex flex-col justify-center">
           {/* Encabezado */}
           <div className="text-center mb-6">
-            <h1 className="font-display font-bold text-3xl text-[var(--tinta)] tracking-tight">
+            <h1 className="font-bold text-[1.6rem] text-gray tracking-tight">
               Bienvenido
             </h1>
-            <p className="font-inter text-xs sm:text-sm text-[var(--tinta-suave)] mt-1.5">
+            <p className="text-xs sm:text-sm text-gray/80">
               Ingresa tus datos para iniciar sesión
             </p>
           </div>
@@ -181,7 +181,7 @@ export default function Login() {
             <button
               type="submit"
               disabled={submitting}
-              className="w-full py-3 px-4 bg-[var(--tinta)] hover:bg-[var(--siena)] text-[var(--alabastro)] font-semibold rounded-lg text-sm transition-colors shadow-md cursor-pointer mt-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full py-3 px-4 bg-bordeau hover:bg-bordeau/80 text-parch font-semibold rounded-lg text-sm transition-colors shadow-md cursor-pointer mt-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {submitting ? "Iniciando sesión..." : "Iniciar sesión"}
             </button>

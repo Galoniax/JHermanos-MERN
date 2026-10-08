@@ -8,10 +8,12 @@ export function toNumber(price) {
   return Number(price);
 }
 
-export function formatPrice(price) {
-  return new Intl.NumberFormat("es-AR", {
-    style: "currency",
-    currency: "ARS",
-    maximumFractionDigits: 0,
-  }).format(toNumber(price));
-}
+export const formatPrice = (price) => {
+  if (price == null) return "$ 0";
+
+  const formattedNumber = toNumber(price)
+    .toString()
+    .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+  return `$ ${formattedNumber}`;
+};
