@@ -9,8 +9,6 @@ import { useInView } from "react-intersection-observer";
 import Skeleton from "react-loading-skeleton";
 
 export default function Products() {
-  const { addToCart } = useCart();
-
   const [params, setSearchParams] = useSearchParams();
 
   const category = params.get("category") || "";
@@ -63,20 +61,20 @@ export default function Products() {
   //console.log("Error: ", isError, error);
 
   return (
-    <main className="px-6 py-18 bg-pitch min-h-screen">
+    <main className="px-6 py-18 bg-parch min-h-screen">
       <div className="flex flex-col gap-6">
         <div className="flex justify-between items-center px-20">
-          <div className="flex flex-col items-start gap-1">
-            <span className="font-light text-sm tracking-wider text-parch/40">
+          <div className="flex flex-col items-start">
+            <span className="text-sm tracking-wider text-pitch/60">
               Nuestro catalogo
             </span>
 
-            <h1 className="font-bold text-parch text-[3rem]">
+            <h1 className="font-bold text-pitch text-[3rem]">
               Nuestros productos
             </h1>
           </div>
 
-          <p className="font-light text-parch/50 text-lg max-w-lg text-right">
+          <p className="font-light text-pitch/50 text-lg max-w-lg text-right">
             Una colección pensada para perdurar. Materiales seleccionados y
             diseño atemporal para asegurar que cada pieza que elijas hoy, siga
             siendo esencial mañana.

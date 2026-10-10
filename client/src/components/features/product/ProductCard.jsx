@@ -19,7 +19,7 @@ export default function ProductCard({ product }) {
       }}
       className="flex flex-col gap-2 cursor-pointer"
     >
-      <div className="border border-parch/10 overflow-hidden min-h-[420px]">
+      <div className="border border-pitch/10 overflow-hidden min-h-[420px]">
         <img
           src={
             isHovered && isMultiple
@@ -32,22 +32,22 @@ export default function ProductCard({ product }) {
 
       <div className="flex flex-row justify-between items-start">
         <div className="flex flex-col gap-1">
-          <span className="text-parch text-base font-semibold">
+          <span className="text-pitch text-base font-semibold">
             {product.name}
           </span>
-          <span className="text-parch/50 text-sm line-clamp-2 max-w-[90%]">
+          <span className="text-pitch/50 text-sm line-clamp-2 max-w-[90%]">
             {product.description}
           </span>
         </div>
         <div className="flex flex-col gap-1">
           {product.discount > 0 && (
-            <p className="text-parch text-base font-semibold">
+            <p className="text-pitch text-base font-semibold">
               ${product.finalPrice?.$numberDecimal || product.finalPrice}
             </p>
           )}
 
           <p
-            className={`${product.discount > 0 ? "line-through text-gray-500" : "text-parch text-base font-semibold"}`}
+            className={`${product.discount > 0 ? "line-through text-gray-500" : "text-pitch text-base font-semibold"}`}
           >
             ${product.price?.$numberDecimal || product.price}
           </p>
@@ -56,3 +56,5 @@ export default function ProductCard({ product }) {
     </article>
   );
 }
+
+// TODO: Cambiar a {formatPrice(product.finalPrice?.$numberDecimal || product.finalPrice)}

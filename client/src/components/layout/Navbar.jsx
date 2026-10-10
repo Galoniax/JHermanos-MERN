@@ -16,7 +16,6 @@ export default function Navbar() {
   const { isAuthenticated } = useAuth();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
   const [isCartOpen, setIsCartOpen] = useState(false);
 
   const location = useLocation();
@@ -42,7 +41,7 @@ export default function Navbar() {
 
   return (
     <>
-      <div className="w-full overflow-hidden bg-parch py-2.5 flex">
+      <div className="w-full overflow-hidden bg-pitch/95 py-2.5 flex">
         <motion.div
           className="flex w-max"
           animate={{
@@ -57,21 +56,21 @@ export default function Navbar() {
           {duplicated.map((item, idx) => (
             <div key={idx} className="flex items-center px-8 gap-10">
               <img
-                src="/img/logo.svg"
+                src="/img/logo.png"
                 alt="Hermanos Jota"
                 style={{ height: "18px", width: "auto" }}
               />
 
-              <p className="whitespace-nowrap font-semibold uppercase text-[10px] tracking-widest">
+              <p className="whitespace-nowrap font-semibold uppercase text-[10px] tracking-widest text-parch/80">
                 {item}
               </p>
             </div>
           ))}
         </motion.div>
       </div>
-      <header className="sticky top-0 z-50 flex flex-row justify-between items-center w-full *:flex-1 tracking-wide bg-pitch text-parch py-2.5 px-14 border-b border-parch/15">
+      <header className="sticky top-0 z-50 flex flex-row justify-between items-center w-full *:flex-1 tracking-wide bg-parch py-2.5 px-14 border-b border-pitch/15 text-pitch/60">
         <nav
-          className="*:flex flex-row items-center *:gap-8 uppercase text-[11px] font-semibold"
+          className="*:flex flex-row items-center *:gap-8 uppercase text-[11px] font-bold"
           aria-label="Navegación principal"
         >
           <ul>
@@ -112,12 +111,11 @@ export default function Navbar() {
             className={location.pathname === ROUTES.HOME ? "active-link" : ""}
           >
             <img
-              src="/img/logo.svg"
+              src="/img/logo.png"
               alt="Hermanos Jota"
               style={{
                 height: "40px",
                 width: "auto",
-                filter: "brightness(0) invert(1)",
               }}
             />
           </Link>
@@ -153,7 +151,7 @@ export default function Navbar() {
           ) : (
             <Link
               to={ROUTES.LOGIN}
-              className="cursor-pointer font-light text-[13px] border border-parch/10 hover:border-parch/20 py-1 px-4 transition-colors duration-300"
+              className="cursor-pointer font-medium text-[13px] border border-pitch/10 hover:border-pitch/20 py-1 px-4 transition-colors duration-300"
             >
               <span>Iniciar Sesión</span>
             </Link>

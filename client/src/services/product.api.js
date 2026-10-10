@@ -7,3 +7,7 @@ export const getProducts = async (category, page) => {
 export const getProductById = async (id) => {
   return await interceptor.get(`/product/${id}`);
 };
+
+export const getProductsByIds = async (ids) => {
+  return await interceptor.post(`/product/cart`, { ids });
+};
