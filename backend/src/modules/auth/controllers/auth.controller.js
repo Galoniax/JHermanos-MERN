@@ -1,6 +1,6 @@
-import { NODE_ENV } from "../../../core/config/config.js";
-import { ErrorResponse } from "../../../core/errors/error-handler.js";
-import { AuthService } from "../services/auth.service.js";
+import { NODE_ENV } from '../../../core/config/config.js';
+import { ErrorResponse } from '../../../core/errors/error-handler.js';
+import { AuthService } from '../services/auth.service.js';
 
 export class AuthController {
   constructor(authService = new AuthService()) {
@@ -14,19 +14,19 @@ export class AuthController {
       const token = await this.authService.login(email, password);
 
       const cookieAge = 24 * 60 * 60 * 1000; // 1 Día
-      const isProduction = NODE_ENV === "production";
+      const isProduction = NODE_ENV === 'production';
 
       const cookieOptions = {
         httpOnly: true,
         secure: isProduction,
-        sameSite: isProduction ? "none" : "lax",
+        sameSite: isProduction ? 'none' : 'lax',
         maxAge: cookieAge,
-        path: "/",
+        path: '/',
       };
 
-      return res.cookie("accessToken", token, cookieOptions).status(200).json({
+      return res.cookie('accessToken', token, cookieOptions).status(200).json({
         success: true,
-        message: "Login exitoso",
+        message: 'Login exitoso',
       });
     } catch (error) {
       next(error);
@@ -40,20 +40,23 @@ export class AuthController {
       const response = await this.authService.register(user, token);
 
       const cookieAge = 24 * 60 * 60 * 1000; // 1 Día
-      const isProduction = NODE_ENV === "production";
+      const isProduction = NODE_ENV === 'production';
 
       const cookieOptions = {
         httpOnly: true,
         secure: isProduction,
-        sameSite: isProduction ? "none" : "lax",
+        sameSite: isProduction ? 'none' : 'lax',
         maxAge: cookieAge,
-        path: "/",
+        path: '/',
       };
 
-      return res.cookie("accessToken", response.token, cookieOptions).status(200).json({
-        success: true,
-        message: "Registro exitoso",
-      });
+      return res
+        .cookie('accessToken', response.token, cookieOptions)
+        .status(200)
+        .json({
+          success: true,
+          message: 'Registro exitoso',
+        });
     } catch (error) {
       next(error);
     }
@@ -65,7 +68,7 @@ export class AuthController {
 
       if (
         req.headers.authorization &&
-        req.headers.authorization.startsWith("Bearer ")
+        req.headers.authorization.startsWith('Bearer ')
       ) {
         token = req.headers.authorization.substring(7);
       } else if (req.cookies && req.cookies.accessToken) {
@@ -73,23 +76,62 @@ export class AuthController {
       }
 
       if (!token) {
-        throw new ErrorResponse("Token no encontrado", 401);
+        throw new ErrorResponse('Token no encontrado', 401);
       }
 
-      const isProduction = NODE_ENV === "production";
+      const isProduction = NODE_ENV === 'production';
 
       return res
-        .clearCookie("accessToken", {
+        .clearCookie('accessToken', {
           httpOnly: true,
           secure: isProduction,
-          sameSite: isProduction ? "none" : "lax",
-          path: "/",
+          sameSite: isProduction ? 'none' : 'lax',
+          path: '/',
         })
         .status(200)
         .json({
           success: true,
-          message: "Logout exitoso",
+          message: 'Logout exitoso',
         });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  // ==== Recovery Code Requests (Password) ====
+  reqCode = async (req, res, next) => {
+    try {
+      const { email } = req.body;
+      await this.authService.requestRecoveryCode(email);
+
+      return res.status(200).json({
+        success: true,
+        message: 'Código de recuperación enviado',
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  valCode = async (req, res, next) => {
+    const { email, code } = req.body;
+    try {
+      const resetToken = await this.authService.validateCode(email, code);
+
+      return res.status(200).json({ success: true, token: resetToken });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  reset = async (req, res, next) => {
+    const { token, newPassword } = req.body;
+    try {
+      await this.authService.resetPassword(token, newPassword);
+      return res.status(201).json({
+        success: true,
+        message: 'Contraseña actualizada exitosamente',
+      });
     } catch (error) {
       next(error);
     }

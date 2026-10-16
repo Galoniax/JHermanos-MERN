@@ -1,20 +1,20 @@
-import express from "express";
-import cors from "cors";
-import cookieParser from "cookie-parser";
+import express from 'express';
+import cors from 'cors';
+import cookieParser from 'cookie-parser';
 
-import { connectDB } from "./core/database/database.js";
-import { ErrorHandler } from "./core/middleware/error-handler.js";
-import { API_PREFIX, FRONTEND_URL, PORT } from "./core/config/config.js";
-import { Auth, Contact, Orders } from "./index.js";
+import { connectDB } from './core/database/database.js';
+import { ErrorHandler } from './core/middleware/error-handler.js';
+import { API_PREFIX, FRONTEND_URL, PORT } from './core/config/config.js';
+import { Auth, Category, Contact, Orders, Payment, Product } from './index.js';
 
-import passport from "passport";
+import passport from 'passport';
 
-import "./core/config/passport.js";
+import './core/config/passport.js';
 
 // Inicialización de aplicación
 const app = express();
 
-app.set("trust proxy", 1); // Confía en el proxy (Rate-limits, Nginx, etc.)
+app.set('trust proxy', 1); // Confía en el proxy (Rate-limits, Nginx, etc.)
 
 const origins = [FRONTEND_URL];
 
@@ -22,16 +22,16 @@ const origins = [FRONTEND_URL];
 app.use(
   cors({
     origin: origins,
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
     allowedHeaders: [
-      "Content-Type",
-      "Authorization",
-      "X-Auth-Token",
-      "X-Client-System",
+      'Content-Type',
+      'Authorization',
+      'X-Auth-Token',
+      'X-Client-System',
     ], // Headers Autorizados
-    exposedHeaders: ["X-Auth-Token"], // Headers Expuestos a frontend
+    exposedHeaders: ['X-Auth-Token'], // Headers Expuestos a frontend
     credentials: true,
-  }),
+  })
 );
 
 app.use(express.json());
@@ -46,7 +46,7 @@ app.use(passport.initialize());
 // Rutas
 app.get(`${API_PREFIX}/health`, (req, res) => {
   return res.status(200).json({
-    status: "OK",
+    status: 'OK',
     uptime: process.uptime(),
     timestamp: new Date().toISOString(),
   });
@@ -54,7 +54,10 @@ app.get(`${API_PREFIX}/health`, (req, res) => {
 
 app.use(`${API_PREFIX}/auth`, Auth);
 app.use(`${API_PREFIX}/contact`, Contact);
+app.use(`${API_PREFIX}/product`, Product);
+app.use(`${API_PREFIX}/category`, Category);
 app.use(`${API_PREFIX}/orders`, Orders);
+app.use(`${API_PREFIX}/payment`, Payment);
 
 // Middleware de manejo de errores
 app.use(ErrorHandler);
