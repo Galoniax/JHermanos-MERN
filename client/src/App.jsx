@@ -1,12 +1,13 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { appRoutes } from "./routes/appRoutes";
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
+import { appRoutes } from './routes/appRoutes';
 
-import { CartProvider } from "./context/CartProvider";
-import { AuthProvider } from "./context/AuthProvider";
-import Layout from "./components/layout/Layout";
+import { CartProvider } from './context/CartProvider';
+import { AuthProvider } from './context/AuthProvider';
+import Layout from './components/layout/Layout';
 
-import { ReactLenis } from "lenis/react";
+import { ReactLenis } from 'lenis/react';
+import { ROUTES } from './routes/paths';
 
 // TanStack Query Client Setup
 const queryClient = new QueryClient({
@@ -21,6 +22,8 @@ const queryClient = new QueryClient({
 });
 
 function AppRoutesContent() {
+  const isPath = useLocation();
+
   return (
     <>
       <ReactLenis root options={{ duration: 1.3 }} />
@@ -29,8 +32,8 @@ function AppRoutesContent() {
        * <Suspense fallback={ <AnimatePresence mode='wait'><LoaderScreen /></AnimatePresence>}>
        */}
 
-      <Layout>
-        <Routes>
+      <Routes>
+        <Route element={<Layout />}>
           {appRoutes.map((route, idx) => {
             if (route.children) {
               return (
@@ -47,11 +50,16 @@ function AppRoutesContent() {
             }
 
             return (
-              <Route key={idx} path={route.path} element={route.element} />
+              <Route
+                key={idx}
+                index={ROUTES.HOME === isPath.pathname}
+                path={route.path}
+                element={route.element}
+              />
             );
           })}
-        </Routes>
-      </Layout>
+        </Route>
+      </Routes>
     </>
   );
 }

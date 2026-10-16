@@ -1,9 +1,9 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect } from 'react';
 import {
   getMe,
   login as authLogin,
   logout as apiLogout,
-} from "../services/auth.api";
+} from '../services/auth.api';
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const AuthContext = createContext(null);
@@ -15,10 +15,9 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const init = async () => {
       try {
-        const user = await getMe();
+        const response = await getMe();
 
-        console.log(user);
-        setUser(user);
+        setUser(response.data);
       } catch {
         setUser(null);
       } finally {
@@ -32,8 +31,8 @@ export const AuthProvider = ({ children }) => {
     const response = await authLogin(email, password);
 
     if (response.success) {
-      const user = await getMe();
-      setUser(user);
+      const response = await getMe();
+      setUser(response.data);
     }
 
     return response;
@@ -49,14 +48,19 @@ export const AuthProvider = ({ children }) => {
 
       setUser(null);
     } catch (err) {
-      console.warn("Error al cerrar sesión en el servidor:", err);
+      console.warn('Error al cerrar sesión en el servidor:', err);
     }
   };
 
   const refreshUser = async () => {
     try {
-      const user = await getMe();
-      setUser(user);
+      const response = await getMe();
+
+      if (response.success) {
+        setUser(response.data);
+      }
+
+      return response;
     } catch {
       setUser(null);
     }

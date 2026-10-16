@@ -1,19 +1,19 @@
-import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { OUT_AUTH, ROUTES } from "../../routes/paths";
-import { useCart } from "../../hooks/useCart";
-import { useAuth } from "../../hooks/useAuth";
-import Cart from "../modal/Cart";
+import { useState } from 'react';
+import { Link, NavLink, useLocation } from 'react-router-dom';
+import { OUT_AUTH, ROUTES } from '../../routes/paths';
+import { useCart } from '../../hooks/useCart';
+import { useAuth } from '../../hooks/useAuth';
+import Cart from '../modal/Cart';
 
-import { LuUserRound } from "react-icons/lu";
-import { FiShoppingBag } from "react-icons/fi";
-import { LuHeart } from "react-icons/lu";
+import { FiShoppingBag } from 'react-icons/fi';
 
-import { motion } from "framer-motion";
+import { motion } from 'framer-motion';
+
+import avatar from '@/assets/images/DefaultProfile.png';
 
 export default function Navbar() {
   const { cartCount } = useCart();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -29,12 +29,12 @@ export default function Navbar() {
   }
 
   const carousel = [
-    "10 años de garantía en estructura",
-    "Maderas nativas certificadas FSC",
-    "Cero plásticos de un solo uso",
-    "Hecho a mano en Gran Buenos Aires",
-    "Programa herencia viva",
-    "5 años de garantía en acabado",
+    '10 años de garantía en estructura',
+    'Maderas nativas certificadas FSC',
+    'Cero plásticos de un solo uso',
+    'Hecho a mano en Gran Buenos Aires',
+    'Programa herencia viva',
+    '5 años de garantía en acabado',
   ];
 
   const duplicated = [...carousel, ...carousel, ...carousel];
@@ -45,10 +45,10 @@ export default function Navbar() {
         <motion.div
           className="flex w-max"
           animate={{
-            x: "-50%",
+            x: '-50%',
           }}
           transition={{
-            ease: "linear",
+            ease: 'linear',
             duration: 80,
             repeat: Infinity,
           }}
@@ -58,7 +58,7 @@ export default function Navbar() {
               <img
                 src="/img/logo.png"
                 alt="Hermanos Jota"
-                style={{ height: "18px", width: "auto" }}
+                style={{ height: '18px', width: 'auto' }}
               />
 
               <p className="whitespace-nowrap font-semibold uppercase text-[10px] tracking-widest text-parch/80">
@@ -75,32 +75,44 @@ export default function Navbar() {
         >
           <ul>
             <li>
-              <Link
+              <NavLink
                 to={ROUTES.HOME}
                 onClick={closeMenu}
-                className="hover:underline underline-offset-5"
+                className="hover:underline underline-offset-4"
               >
-                Inicio
-              </Link>
+                {({ isActive }) => (
+                  <span className={isActive ? 'text-bordeau underline' : ''}>
+                    Inicio
+                  </span>
+                )}
+              </NavLink>
             </li>
             <li>
-              <Link
+              <NavLink
                 to={ROUTES.PRODUCTS}
                 onClick={closeMenu}
-                className="hover:underline underline-offset-5"
+                className="hover:underline underline-offset-4"
               >
-                Catálogo
-              </Link>
+                {({ isActive }) => (
+                  <span className={isActive ? 'text-bordeau underline' : ''}>
+                    Catálogo
+                  </span>
+                )}
+              </NavLink>
             </li>
 
             <li>
-              <Link
+              <NavLink
                 to={ROUTES.CONTACT}
                 onClick={closeMenu}
-                className="hover:underline underline-offset-5"
+                className="hover:underline underline-offset-4"
               >
-                Contacto
-              </Link>
+                {({ isActive }) => (
+                  <span className={isActive ? 'text-bordeau underline' : ''}>
+                    Contacto
+                  </span>
+                )}
+              </NavLink>
             </li>
           </ul>
         </nav>
@@ -108,14 +120,14 @@ export default function Navbar() {
         <div className="flex flex-row justify-center">
           <Link
             to={ROUTES.HOME}
-            className={location.pathname === ROUTES.HOME ? "active-link" : ""}
+            className={location.pathname === ROUTES.HOME ? 'active-link' : ''}
           >
             <img
               src="/img/logo.png"
               alt="Hermanos Jota"
               style={{
-                height: "40px",
-                width: "auto",
+                height: '40px',
+                width: 'auto',
               }}
             />
           </Link>
@@ -136,17 +148,11 @@ export default function Navbar() {
             )}
           </button>
 
-          <button
-            type="button"
-            aria-label={`Ver carrito con ${cartCount} productos`}
-            className="cursor-pointer"
-          >
-            <LuHeart size={18} />
-          </button>
-
           {isAuthenticated ? (
             <Link to={ROUTES.PROFILE} className="cursor-pointer">
-              <LuUserRound size={18} />
+              <div className="w-8 h-8 rounded-full overflow-hidden ring ring-pitch/40">
+                <img src={user?.avatar_url || avatar} alt="Usuario" />
+              </div>
             </Link>
           ) : (
             <Link
@@ -160,8 +166,8 @@ export default function Navbar() {
           <button
             type="button"
             id="menu-toggle"
-            className={`menu-toggle ${isMenuOpen ? "menu-activo" : ""}`}
-            aria-label={isMenuOpen ? "Cerrar menú" : "Abrir menú"}
+            className={`menu-toggle ${isMenuOpen ? 'menu-activo' : ''}`}
+            aria-label={isMenuOpen ? 'Cerrar menú' : 'Abrir menú'}
             aria-expanded={isMenuOpen}
             aria-controls="main-nav"
             onClick={() => setIsMenuOpen((prev) => !prev)}
@@ -179,7 +185,7 @@ export default function Navbar() {
 
       {/* Overlay de fondo para el menú móvil */}
       <div
-        className={`menu-overlay ${isMenuOpen ? "is-visible" : ""}`}
+        className={`menu-overlay ${isMenuOpen ? 'is-visible' : ''}`}
         onClick={closeMenu}
         aria-hidden="true"
       />
