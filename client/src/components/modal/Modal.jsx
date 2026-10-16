@@ -1,12 +1,12 @@
-import { createPortal } from "react-dom";
-import { motion } from "framer-motion";
+import { createPortal } from 'react-dom';
+import { motion } from 'framer-motion';
 
 export default function Modal({
   children,
   isOpen,
   onClose,
   overlay,
-  className = "",
+  className = '',
 }) {
   if (!isOpen) return null;
 
@@ -22,6 +22,6 @@ export default function Modal({
         {children}
       </div>
     </motion.div>,
-    document.body,
+    document.body
   );
 }

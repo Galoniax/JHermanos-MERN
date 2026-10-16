@@ -1,25 +1,29 @@
-import { LuTruck, LuRotateCcw, LuShieldCheck, LuLeaf } from "react-icons/lu";
+import { LuTruck, LuRotateCcw, LuShieldCheck, LuLeaf } from 'react-icons/lu';
 
 const FEATURES = [
   {
     icon: LuTruck,
-    title: "Envío gratis en compras > €200",
-    description: "Carbono neutral, con seguimiento y entregado en tu hogar en 3 días hábiles.",
+    title: 'Envío gratis en compras > €200',
+    description:
+      'Carbono neutral, con seguimiento y entregado en tu hogar en 3 días hábiles.',
   },
   {
     icon: LuRotateCcw,
-    title: "Devoluciones a 30 días",
-    description: "Sin uso, con etiquetas y 100% gratuito. Sin formularios ni complicaciones.",
+    title: 'Devoluciones a 30 días',
+    description:
+      'Sin uso, con etiquetas y 100% gratuito. Sin formularios ni complicaciones.',
   },
   {
     icon: LuShieldCheck,
-    title: "Dos años de reparación gratis",
-    description: "Costuras, herrajes, uniones y acabados reparados por los mismos artesanos.",
+    title: 'Dos años de reparación gratis',
+    description:
+      'Costuras, herrajes, uniones y acabados reparados por los mismos artesanos.',
   },
   {
     icon: LuLeaf,
-    title: "Materiales trazables",
-    description: "Origen transparente de cada madera, tela y cuero especificado en cada producto.",
+    title: 'Materiales trazables',
+    description:
+      'Origen transparente de cada madera, tela y cuero especificado en cada producto.',
   },
 ];
 

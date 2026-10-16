@@ -1,4 +1,4 @@
-import Contact from "../../../core/models/Contact.js";
+import Contact from '../../../core/models/Contact.js';
 
 export class ContactService {
   async create({ nombre, email, mensaje }) {

@@ -1,5 +1,5 @@
-import { ZodError } from "zod";
-import { ErrorResponse } from "../errors/error-handler.js";
+import { ZodError } from 'zod';
+import { ErrorResponse } from '../errors/error-handler.js';
 
 export const validate = (schema) => {
   return async (req, res, next) => {

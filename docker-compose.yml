@@ -3,7 +3,7 @@ services:
     build: ./ms-invoice
     container_name: ms-invoice
     ports:
-      - "3005:3005"
+      - '3005:3005'
     networks:
       - ecom-network
 

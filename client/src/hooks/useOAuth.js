@@ -1,8 +1,8 @@
-import { useNavigate } from "react-router-dom";
-import { ROUTES } from "../routes/paths";
-import { useEffect } from "react";
-import { OAuth } from "../services/auth.api";
-import { useAuth } from "./useAuth";
+import { useNavigate } from 'react-router-dom';
+import { ROUTES } from '../routes/paths';
+import { useEffect } from 'react';
+import { OAuth } from '../services/auth.api';
+import { useAuth } from './useAuth';
 
 const getOAuthActions = (navigate, refreshUser) => ({
   OAUTH_SUCCESS: async () => {
@@ -15,7 +15,7 @@ const getOAuthActions = (navigate, refreshUser) => ({
     navigate(`${ROUTES.REGISTER}?token=${data.data}`);
   },
   OAUTH_ERROR: (data) => {
-    console.error("Error devuelto por OAuth:", data);
+    console.error('Error devuelto por OAuth:', data);
   },
 });
 
@@ -27,7 +27,7 @@ export function useOAuth() {
     const actions = getOAuthActions(navigate, refreshUser);
 
     const onMessage = (event) => {
-      if (!event.data || typeof event.data !== "object") return;
+      if (!event.data || typeof event.data !== 'object') return;
 
       const type = event.data.type;
       const handler = actions[type];
@@ -37,10 +37,10 @@ export function useOAuth() {
       }
     };
 
-    window.addEventListener("message", onMessage);
+    window.addEventListener('message', onMessage);
 
     return () => {
-      window.removeEventListener("message", onMessage);
+      window.removeEventListener('message', onMessage);
     };
   }, [navigate, refreshUser]);
 
@@ -49,9 +49,9 @@ export function useOAuth() {
       const response = await OAuth(provider);
       const features = `left=${(window.innerWidth - 500) / 2},top=${(window.innerHeight - 600) / 2},width=500,height=600`;
 
-      window.open(response, "_blank", features);
+      window.open(response, '_blank', features);
     } catch (error) {
-      console.error("Error al iniciar autenticación OAuth:", error);
+      console.error('Error al iniciar autenticación OAuth:', error);
     }
   };
 

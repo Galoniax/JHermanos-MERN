@@ -1,7 +1,7 @@
-import { useAuth } from "@/hooks/useAuth";
-import { Outlet, useNavigate } from "react-router-dom";
-import { ROUTES } from "../paths";
-import { useEffect } from "react";
+import { useAuth } from '@/hooks/useAuth';
+import { Outlet, useNavigate } from 'react-router-dom';
+import { ROUTES } from '../paths';
+import { useEffect } from 'react';
 
 export default function PublicRoutes() {
   const { isAuthenticated } = useAuth();

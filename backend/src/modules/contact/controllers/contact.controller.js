@@ -1,4 +1,4 @@
-import { ContactService } from "../services/contact.service.js";
+import { ContactService } from '../services/contact.service.js';
 
 export class ContactController {
   constructor(contactService = new ContactService()) {
@@ -15,7 +15,7 @@ export class ContactController {
 
       return res.status(201).json({
         success: true,
-        message: "Mensaje recibido. ¡Gracias por escribirnos!",
+        message: 'Mensaje recibido. ¡Gracias por escribirnos!',
       });
     } catch (error) {
       next(error);

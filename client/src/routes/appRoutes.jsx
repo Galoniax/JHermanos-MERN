@@ -6,10 +6,10 @@ import {
   ProductDetail,
   Products,
   Register,
-} from "../pages";
-import { ROUTES } from "./paths";
+} from '../pages';
+import { ROUTES } from './paths';
 
-import PublicRoutes from "./guards/PublicRoutes";
+import PublicRoutes from './guards/PublicRoutes';
 
 export const appRoutes = [
   {
@@ -21,7 +21,7 @@ export const appRoutes = [
     element: <Products />,
   },
   {
-    path: "/product/:id/:slug?",
+    path: '/product/:id/:slug?',
     element: <ProductDetail />,
   },
   {

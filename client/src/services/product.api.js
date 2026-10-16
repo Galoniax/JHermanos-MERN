@@ -1,7 +1,7 @@
-import { interceptor } from "@/api/interceptor/axios-interceptor";
+import { interceptor } from '@/api/interceptor/axios-interceptor';
 
 export const getProducts = async (category, page) => {
-  return await interceptor.get("/product", { params: { category, page } });
+  return await interceptor.get('/product', { params: { category, page } });
 };
 
 export const getProductById = async (id) => {
@@ -10,4 +10,8 @@ export const getProductById = async (id) => {
 
 export const getProductsByIds = async (ids) => {
   return await interceptor.post(`/product/cart`, { ids });
+};
+
+export const getNewProducts = async (limit) => {
+  return await interceptor.get(`/product/new`, { params: { limit } });
 };

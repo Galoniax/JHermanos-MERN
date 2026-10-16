@@ -1,4 +1,4 @@
-import Order from "../../../core/models/Order.js";
+import Order from '../../../core/models/Order.js';
 
 export class OrderService {
   async create(orderData) {

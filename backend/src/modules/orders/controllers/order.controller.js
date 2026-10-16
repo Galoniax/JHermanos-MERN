@@ -1,4 +1,4 @@
-import { OrderService } from "../services/order.service.js";
+import { OrderService } from '../services/order.service.js';
 
 export class OrderController {
   constructor(orderService = new OrderService()) {
@@ -12,7 +12,7 @@ export class OrderController {
       if (!items || !Array.isArray(items) || items.length === 0) {
         return res.status(400).json({
           success: false,
-          error: "La orden debe contener al menos un producto.",
+          error: 'La orden debe contener al menos un producto.',
         });
       }
 
@@ -26,26 +26,26 @@ export class OrderController {
         })),
         total_amount: Number(total_amount),
         shipping_address: shipping_address || {
-          address: "Retiro en Taller Hermanos Jota",
-          city: "Buenos Aires",
-          state: "CABA",
-          zip_code: "1232",
-          country: "Argentina",
+          address: 'Retiro en Taller Hermanos Jota',
+          city: 'Buenos Aires',
+          state: 'CABA',
+          zip_code: '1232',
+          country: 'Argentina',
         },
         customer: customer || {
-          name: req.user?.nombre || "Cliente Invitado",
-          email: req.user?.email || "cliente@hermanosjota.com",
-          phone: req.user?.phone || "",
+          name: req.user?.nombre || 'Cliente Invitado',
+          email: req.user?.email || 'cliente@hermanosjota.com',
+          phone: req.user?.phone || '',
         },
         user: req.user?._id || req.user?.id || undefined,
-        status: "PENDIENTE",
+        status: 'PENDIENTE',
       };
 
       const order = await this.orderService.create(orderData);
 
       return res.status(201).json({
         success: true,
-        message: "Orden creada exitosamente",
+        message: 'Orden creada exitosamente',
         data: order,
       });
     } catch (error) {

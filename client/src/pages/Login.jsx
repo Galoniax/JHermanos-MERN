@@ -1,29 +1,29 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { ROUTES } from "../routes/paths";
-import AuthSection from "../components/features/auth/AuthSection";
-import auth_bg from "../assets/images/auth_bg.webp";
-import { useOAuth } from "../hooks/useOAuth";
-import { useAuth } from "../hooks/useAuth";
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { ROUTES } from '../routes/paths';
+import AuthSection from '../components/features/auth/AuthSection';
+import auth_bg from '../assets/images/auth_bg.webp';
+import { useOAuth } from '../hooks/useOAuth';
+import { useAuth } from '../hooks/useAuth';
 
 export default function Login() {
   const { handleOAuth } = useOAuth();
   const { login: authLogin } = useAuth();
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [showPass, setShowPass] = useState(false);
 
   const [submitting, setSubmitting] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrorMessage("");
+    setErrorMessage('');
 
     if (!email.trim() || !password) {
-      setErrorMessage("Por favor, completá tu correo y contraseña.");
+      setErrorMessage('Por favor, completá tu correo y contraseña.');
       return;
     }
 
@@ -33,11 +33,11 @@ export default function Login() {
 
       navigate(ROUTES.HOME);
     } catch (err) {
-      console.error("Error en login:", err);
+      console.error('Error en login:', err);
       setErrorMessage(
         err?.error ||
           err?.message ||
-          "Credenciales incorrectas o error en el servidor.",
+          'Credenciales incorrectas o error en el servidor.'
       );
     } finally {
       setSubmitting(false);
@@ -71,7 +71,7 @@ export default function Login() {
           <div className="grid grid-cols-1 gap-3 mb-5">
             <button
               type="button"
-              onClick={() => handleOAuth("google")}
+              onClick={() => handleOAuth('google')}
               className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg border border-stone-300 text-stone-700 font-medium text-xs hover:bg-stone-50 hover:border-stone-400 transition-all shadow-xs cursor-pointer"
             >
               <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
@@ -127,7 +127,7 @@ export default function Login() {
 
               <div className="relative">
                 <input
-                  type={showPass ? "text" : "password"}
+                  type={showPass ? 'text' : 'password'}
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -183,13 +183,13 @@ export default function Login() {
               disabled={submitting}
               className="w-full py-3 px-4 bg-bordeau hover:bg-bordeau/80 text-parch font-semibold rounded-lg text-sm transition-colors shadow-md cursor-pointer mt-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {submitting ? "Iniciando sesión..." : "Iniciar sesión"}
+              {submitting ? 'Iniciando sesión...' : 'Iniciar sesión'}
             </button>
           </form>
 
           {/* Llamado a Registro */}
           <p className="text-center text-xs text-stone-600 mt-5">
-            ¿No tienes una cuenta?{" "}
+            ¿No tienes una cuenta?{' '}
             <Link
               to={ROUTES.REGISTER}
               className="font-bold text-[var(--tinta)] hover:text-[var(--siena)] hover:underline"
@@ -200,11 +200,11 @@ export default function Login() {
 
           {/* Legales */}
           <p className="text-center text-[11px] text-stone-400 mt-4 leading-normal">
-            Al continuar, aceptas nuestros{" "}
+            Al continuar, aceptas nuestros{' '}
             <a href="#" className="hover:text-stone-600">
               Términos de Servicio
-            </a>{" "}
-            y{" "}
+            </a>{' '}
+            y{' '}
             <a href="#" className="hover:text-stone-600">
               Política de Privacidad
             </a>

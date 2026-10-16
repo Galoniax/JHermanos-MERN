@@ -1,78 +1,78 @@
-@import "@fontsource-variable/schibsted-grotesk";
+@import '@fontsource-variable/schibsted-grotesk';
 @import 'react-loading-skeleton/dist/skeleton.css';
 
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @config "../tailwind.config.js";
 
 /* -------------------- Fuentes Locales -------------------- */
 @font-face {
-  font-family: "Inter Display";
-  src: url("/fonts/InterDisplay-Thin.woff2") format("woff2");
+  font-family: 'Inter Display';
+  src: url('/fonts/InterDisplay-Thin.woff2') format('woff2');
   font-weight: 100;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "Inter Display";
-  src: url("/fonts/InterDisplay-ExtraLight.woff2") format("woff2");
+  font-family: 'Inter Display';
+  src: url('/fonts/InterDisplay-ExtraLight.woff2') format('woff2');
   font-weight: 200;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "Inter Display";
-  src: url("/fonts/InterDisplay-Light.woff2") format("woff2");
+  font-family: 'Inter Display';
+  src: url('/fonts/InterDisplay-Light.woff2') format('woff2');
   font-weight: 300;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "Inter Display";
-  src: url("/fonts/InterDisplay-Regular.woff2") format("woff2");
+  font-family: 'Inter Display';
+  src: url('/fonts/InterDisplay-Regular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "Inter Display";
-  src: url("/fonts/InterDisplay-Medium.woff2") format("woff2");
+  font-family: 'Inter Display';
+  src: url('/fonts/InterDisplay-Medium.woff2') format('woff2');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "Inter Display";
-  src: url("/fonts/InterDisplay-SemiBold.woff2") format("woff2");
+  font-family: 'Inter Display';
+  src: url('/fonts/InterDisplay-SemiBold.woff2') format('woff2');
   font-weight: 600;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "Inter Display";
-  src: url("/fonts/InterDisplay-Bold.woff2") format("woff2");
+  font-family: 'Inter Display';
+  src: url('/fonts/InterDisplay-Bold.woff2') format('woff2');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "Inter Display";
-  src: url("/fonts/InterDisplay-ExtraBold.woff2") format("woff2");
+  font-family: 'Inter Display';
+  src: url('/fonts/InterDisplay-ExtraBold.woff2') format('woff2');
   font-weight: 800;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "Inter Display";
-  src: url("/fonts/InterDisplay-Black.woff2") format("woff2");
+  font-family: 'Inter Display';
+  src: url('/fonts/InterDisplay-Black.woff2') format('woff2');
   font-weight: 900;
   font-style: normal;
   font-display: swap;
@@ -80,19 +80,18 @@
 
 /* -------------------- Configuración de Tema -------------------- */
 @theme {
-  --font-grot: "Schibsted Grotesk Variable", sans-serif;
+  --font-grot: 'Schibsted Grotesk Variable', sans-serif;
   --font-inter-display:
-    "Inter Display", "Inter Display Placeholder", sans-serif;
+    'Inter Display', 'Inter Display Placeholder', sans-serif;
 }
 
 :root {
   /* Paleta de marca Hermanos Jota */
   --parch: #f3f0ea;
-  --bordeau: #5E0B15;
+  --bordeau: #5e0b15;
   --pitch: #121110;
   --gray: #1e1712;
   --carbon: #222725;
-
 }
 
 /* -------------------- Reset base -------------------- */
@@ -104,6 +103,8 @@
 
 html {
   scroll-behavior: smooth;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
 }
 
 body {

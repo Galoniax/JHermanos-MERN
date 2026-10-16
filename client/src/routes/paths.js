@@ -1,15 +1,15 @@
 // Paths de navegacion
 export const ROUTES = {
-  HOME: "/",
-  LOGIN: "/login",
-  REGISTER: "/register",
+  HOME: '/',
+  LOGIN: '/login',
+  REGISTER: '/register',
 
-  PRODUCTS: "/products",
+  PRODUCTS: '/products',
   PRODUCT: (product_id) => `/product/${product_id}`,
 
-  CONTACT: "/contacto",
+  CONTACT: '/contacto',
 
-  CHECKOUT: "/checkout",
+  CHECKOUT: '/checkout',
 };
 
-export const OUT_AUTH = ["/login", "/register"];
+export const OUT_AUTH = ['/login', '/register'];

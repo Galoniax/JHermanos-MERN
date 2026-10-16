@@ -1,4 +1,4 @@
-const Loader = ({ color = "white", size = 6 }) => {
+const Loader = ({ color = 'white', size = 6 }) => {
   return (
     <div
       style={{ width: `${size}px`, height: `${size}px`, color }}

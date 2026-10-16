@@ -1,15 +1,15 @@
-import { useState } from "react";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { ROUTES } from "../routes/paths";
+import { useState } from 'react';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { ROUTES } from '../routes/paths';
 
-import AuthSection from "../components/features/auth/AuthSection";
+import AuthSection from '../components/features/auth/AuthSection';
 
-import auth_bg from "../assets/images/auth_bg.webp";
-import { register } from "../services/auth.api";
+import auth_bg from '../assets/images/auth_bg.webp';
+import { register } from '../services/auth.api';
 
-import { useMutation } from "@tanstack/react-query";
-import { useOAuth } from "../hooks/useOAuth";
-import { useAuth } from "../hooks/useAuth";
+import { useMutation } from '@tanstack/react-query';
+import { useOAuth } from '../hooks/useOAuth';
+import { useAuth } from '../hooks/useAuth';
 
 export default function Register() {
   const { handleOAuth } = useOAuth();
@@ -18,17 +18,17 @@ export default function Register() {
 
   const [params] = useSearchParams();
 
-  const token = params.get("token");
+  const token = params.get('token');
 
   const [user, setUser] = useState({
-    email: "",
-    password: "",
-    confirmPassword: "",
-    phone: "",
-    dni: "",
+    email: '',
+    password: '',
+    confirmPassword: '',
+    phone: '',
+    dni: '',
   });
 
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
 
   const mutation = useMutation({
     mutationFn: ({ user, token }) => register(user, token),
@@ -37,21 +37,21 @@ export default function Register() {
       navigate(ROUTES.HOME);
     },
     onError: (err) => {
-      setError(err?.error || err?.message || "Error al completar el registro");
+      setError(err?.error || err?.message || 'Error al completar el registro');
     },
   });
 
   const handleChanges = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
-    if (error) setError("");
+    if (error) setError('');
   };
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    setError("");
+    setError('');
 
     if (!token && user.password !== user.confirmPassword) {
-      setError("Las contraseñas no coinciden");
+      setError('Las contraseñas no coinciden');
       return;
     }
 
@@ -85,7 +85,7 @@ export default function Register() {
           <div className="grid grid-cols-1 gap-3 mb-5">
             <button
               type="button"
-              onClick={() => handleOAuth("google")}
+              onClick={() => handleOAuth('google')}
               className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg border border-stone-300 text-stone-700 font-medium text-xs hover:bg-stone-50 hover:border-stone-400 transition-all shadow-xs cursor-pointer"
             >
               <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
@@ -239,7 +239,7 @@ export default function Register() {
 
           {/* Llamado a Registro */}
           <p className="text-center text-xs text-stone-600 mt-5">
-            ¿Ya tienes una cuenta?{" "}
+            ¿Ya tienes una cuenta?{' '}
             <Link
               to={ROUTES.LOGIN}
               className="font-bold text-[var(--tinta)] hover:text-[var(--siena)] hover:underline"
@@ -250,11 +250,11 @@ export default function Register() {
 
           {/* Legales */}
           <p className="text-center text-[11px] text-stone-400 mt-4 leading-normal">
-            Al continuar, aceptas nuestros{" "}
+            Al continuar, aceptas nuestros{' '}
             <a href="#" className="hover:text-stone-600">
               Términos de Servicio
-            </a>{" "}
-            y{" "}
+            </a>{' '}
+            y{' '}
             <a href="#" className="hover:text-stone-600">
               Política de Privacidad
             </a>

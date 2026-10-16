@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const { Schema } = mongoose;
 
@@ -12,13 +12,13 @@ const CategorySchema = new Schema(
     products: [
       {
         type: Schema.Types.ObjectId,
-        ref: "Product",
+        ref: 'Product',
       },
     ],
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
-const Category = mongoose.model("Category", CategorySchema);
+const Category = mongoose.model('Category', CategorySchema);
 
 export default Category;

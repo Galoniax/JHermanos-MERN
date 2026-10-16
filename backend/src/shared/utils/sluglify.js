@@ -1,4 +1,4 @@
-import slugify from "slugify";
+import slugify from 'slugify';
 
 export function sluglify(text) {
   return slugify(text, {
@@ -7,6 +7,6 @@ export function sluglify(text) {
     lower: true,
     strict: false,
     trim: true,
-    locale: "es",
-  })
+    locale: 'es',
+  });
 }

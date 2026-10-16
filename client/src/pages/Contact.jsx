@@ -1,27 +1,27 @@
-import { useState, useEffect } from "react";
-import { sendContact } from "../services/contact.api";
+import { useState, useEffect } from 'react';
+import { sendContact } from '../services/contact.api';
 
 const initialForm = {
-  nombre: "",
-  email: "",
-  mensaje: "",
+  nombre: '',
+  email: '',
+  mensaje: '',
 };
 
 const initialErrors = {
-  nombre: "",
-  email: "",
-  mensaje: "",
+  nombre: '',
+  email: '',
+  mensaje: '',
 };
 
 export default function Contact() {
   const [formData, setFormData] = useState(initialForm);
   const [errors, setErrors] = useState(initialErrors);
   const [enviando, setEnviando] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
-    document.title = "Contacto — Hermanos Jota";
+    document.title = 'Contacto — Hermanos Jota';
   }, []);
 
   const handleChange = (e) => {
@@ -30,24 +30,23 @@ export default function Contact() {
 
     // Limpieza de error en tiempo real
     if (errors[name]) {
-      setErrors((prev) => ({ ...prev, [name]: "" }));
+      setErrors((prev) => ({ ...prev, [name]: '' }));
     }
-    if (successMessage) setSuccessMessage("");
-    if (errorMessage) setErrorMessage("");
+    if (successMessage) setSuccessMessage('');
+    if (errorMessage) setErrorMessage('');
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    setSuccessMessage("");
-    setErrorMessage("");
+    setSuccessMessage('');
+    setErrorMessage('');
 
     const valores = {
       nombre: formData.nombre.trim(),
       email: formData.email.trim(),
       mensaje: formData.mensaje.trim(),
     };
-
 
     setEnviando(true);
 
@@ -60,11 +59,11 @@ export default function Contact() {
       setFormData(initialForm);
       setErrors(initialErrors);
     } catch (err) {
-      console.error("Error al enviar mensaje de contacto:", err);
+      console.error('Error al enviar mensaje de contacto:', err);
       setErrorMessage(
         err?.error ||
           err?.message ||
-          "Ocurrió un error al enviar el mensaje. Por favor, intentá nuevamente.",
+          'Ocurrió un error al enviar el mensaje. Por favor, intentá nuevamente.'
       );
     } finally {
       setEnviando(false);
@@ -92,7 +91,7 @@ export default function Contact() {
             </h2>
 
             <form id="form-contacto" onSubmit={handleSubmit} noValidate>
-              <div className={`campo ${errors.nombre ? "invalido" : ""}`}>
+              <div className={`campo ${errors.nombre ? 'invalido' : ''}`}>
                 <label htmlFor="nombre">Nombre completo</label>
                 <input
                   type="text"
@@ -109,7 +108,7 @@ export default function Contact() {
                 </span>
               </div>
 
-              <div className={`campo ${errors.email ? "invalido" : ""}`}>
+              <div className={`campo ${errors.email ? 'invalido' : ''}`}>
                 <label htmlFor="email">Correo electrónico</label>
                 <input
                   type="email"
@@ -126,7 +125,7 @@ export default function Contact() {
                 </span>
               </div>
 
-              <div className={`campo ${errors.mensaje ? "invalido" : ""}`}>
+              <div className={`campo ${errors.mensaje ? 'invalido' : ''}`}>
                 <label htmlFor="mensaje">Mensaje</label>
                 <textarea
                   id="mensaje"
@@ -148,7 +147,7 @@ export default function Contact() {
                 className="btn btn--primary btn--submit"
                 disabled={enviando}
               >
-                {enviando ? "Enviando mensaje..." : "Enviar Mensaje"}
+                {enviando ? 'Enviando mensaje...' : 'Enviar Mensaje'}
               </button>
             </form>
 
@@ -180,7 +179,8 @@ export default function Contact() {
             <div className="contacto-info__item">
               <h3 className="contacto-info__title">Casa Taller</h3>
               <address>
-                Av. San Juan 2847, San Cristóbal<br />
+                Av. San Juan 2847, San Cristóbal
+                <br />
                 C1232AAB — Buenos Aires, Argentina
               </address>
               <p className="mt-2">
@@ -198,7 +198,7 @@ export default function Contact() {
               <h3 className="contacto-info__title">Canales Directos</h3>
               <ul className="contacto-info__list">
                 <li>
-                  <strong>WhatsApp:</strong>{" "}
+                  <strong>WhatsApp:</strong>{' '}
                   <a
                     href="https://wa.me/5491145678900"
                     target="_blank"
@@ -208,13 +208,13 @@ export default function Contact() {
                   </a>
                 </li>
                 <li>
-                  <strong>Email:</strong>{" "}
+                  <strong>Email:</strong>{' '}
                   <a href="mailto:info@hermanosjota.com.ar">
                     info@hermanosjota.com.ar
                   </a>
                 </li>
                 <li>
-                  <strong>Instagram:</strong>{" "}
+                  <strong>Instagram:</strong>{' '}
                   <a
                     href="https://instagram.com/hermanosjota_ba"
                     target="_blank"
