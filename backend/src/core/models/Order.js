@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const { Schema } = mongoose;
 
@@ -26,26 +26,21 @@ const OrderItemSchema = new Schema(
       min: 0,
     },
   },
-  { _id: false }, // Evita generar un _id innecesario para cada item individual
+  { _id: false } // Evita generar un _id innecesario para cada item individual
 );
 
 const OrderSchema = new Schema(
   {
     user: {
       type: Schema.Types.ObjectId,
-      ref: "User",
-      required: false,
-    },
-    customer: {
-      name: String,
-      email: String,
-      phone: String,
+      ref: 'User',
+      required: true,
     },
     items: {
       type: [OrderItemSchema],
       validate: {
         validator: (items) => Array.isArray(items) && items.length > 0,
-        message: "Una orden debe contener al menos un producto.",
+        message: 'Una orden debe contener al menos un producto.',
       },
     },
     total_amount: {
@@ -55,21 +50,19 @@ const OrderSchema = new Schema(
     },
     status: {
       type: String,
-      enum: ["PENDIENTE", "PAGADO", "ENTREGADO", "CANCELADO"],
-      default: "PENDIENTE",
+      enum: ['PENDIENTE', 'PAGADO', 'ENTREGADO', 'CANCELADO'],
+      default: 'PENDIENTE',
     },
     shipping_address: {
       address: { type: String, required: true },
       city: { type: String, required: true },
-      state: { type: String, required: true },
       zip_code: { type: String, required: true },
-      country: { type: String, required: true },
     },
     payment_id: String,
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
-const Order = mongoose.model("Order", OrderSchema);
+const Order = mongoose.model('Order', OrderSchema);
 
 export default Order;

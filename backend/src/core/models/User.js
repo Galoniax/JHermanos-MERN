@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const { Schema } = mongoose;
 
@@ -14,7 +14,7 @@ const UserSchema = new Schema(
       type: String,
       required: true,
       unique: true,
-      match: [/^\d{7,8}$/, "El DNI debe tener 7 u 8 dígitos numéricos"],
+      match: [/^\d{7,8}$/, 'El DNI debe tener 7 u 8 dígitos numéricos'],
       trim: true,
     },
     password: {
@@ -30,12 +30,12 @@ const UserSchema = new Schema(
     },
     provider: {
       type: String,
-      default: "LOCAL",
+      default: 'LOCAL',
     },
     role: {
       type: String,
-      enum: ["ADMIN", "USER"],
-      default: "USER",
+      enum: ['ADMIN', 'USER'],
+      default: 'USER',
     },
     active: {
       type: Boolean,
@@ -47,10 +47,25 @@ const UserSchema = new Schema(
     reset_code_expires: {
       type: Date,
     },
+
+    mp_customer_id: {
+      type: String,
+      default: null,
+    },
+    saved_cards: [
+      {
+        card_id: { type: String, required: true }, // ID permanente devuelto por MP (ej: "12345678")
+        last_four_digits: { type: String, required: true }, // Para mostrar en tu UI: "Visa terminada en 4321"
+        payment_method_id: { type: String, required: true }, // Ej: "visa", "mastercard", "amex"
+        expiration_month: { type: Number, required: true },
+        expiration_year: { type: Number, required: true },
+        cardholder_name: { type: String, required: true },
+      },
+    ],
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
-const User = mongoose.model("User", UserSchema);
+const User = mongoose.model('User', UserSchema);
 
 export default User;
