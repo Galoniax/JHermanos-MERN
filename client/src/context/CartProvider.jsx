@@ -4,6 +4,8 @@ import { createContext, useEffect, useState } from 'react';
 export const CartContext = createContext(null);
 
 export const CartProvider = ({ children }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
   const [cart, setCart] = useState(() => {
     try {
       const savedCart = localStorage.getItem('cart');
@@ -19,7 +21,6 @@ export const CartProvider = ({ children }) => {
   }, [cart]);
 
   const changeQuantity = (product, delta) => {
-    console.log(product, delta);
     setCart((prev) => {
       const existing = prev.find((item) => item.id === product._id);
 
@@ -33,6 +34,10 @@ export const CartProvider = ({ children }) => {
       }
 
       if (existing) {
+        if (delta === 1 && existing.cantidad >= product.stock) {
+          console.log('Limite de stock alcanzado');
+          return prev;
+        }
         return prev
           .map((item) =>
             item.id === product._id
@@ -66,6 +71,8 @@ export const CartProvider = ({ children }) => {
     <CartContext.Provider
       value={{
         cart,
+        isOpen,
+        setIsOpen,
         cartCount,
         changeQuantity,
         removeFromCart,

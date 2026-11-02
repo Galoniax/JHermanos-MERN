@@ -12,11 +12,10 @@ import { motion } from 'framer-motion';
 import avatar from '@/assets/images/DefaultProfile.png';
 
 export default function Navbar() {
-  const { cartCount } = useCart();
+  const { cartCount, isOpen, setIsOpen } = useCart();
   const { isAuthenticated, user } = useAuth();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isCartOpen, setIsCartOpen] = useState(false);
 
   const location = useLocation();
 
@@ -120,6 +119,7 @@ export default function Navbar() {
         <div className="flex flex-row justify-center">
           <Link
             to={ROUTES.HOME}
+            aria-label="Página de inicio"
             className={location.pathname === ROUTES.HOME ? 'active-link' : ''}
           >
             <img
@@ -136,9 +136,9 @@ export default function Navbar() {
         <div className="flex flex-row justify-end items-center gap-5">
           <button
             type="button"
-            onClick={() => setIsCartOpen(true)}
+            onClick={() => setIsOpen(true)}
             aria-label={`Ver carrito con ${cartCount} productos`}
-            className="cursor-pointer flex items-center gap-2"
+            className="cursor-pointer flex items-center gap-2 hover:text-bordeau transition-colors duration-200"
           >
             <FiShoppingBag size={18} />
             {cartCount > 0 && (
@@ -179,9 +179,7 @@ export default function Navbar() {
         </div>
       </header>
 
-      {isCartOpen && (
-        <Cart isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
-      )}
+      {isOpen && <Cart />}
 
       {/* Overlay de fondo para el menú móvil */}
       <div

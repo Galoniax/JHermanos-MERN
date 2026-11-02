@@ -21,7 +21,6 @@ export function useCartProducts({ cart, count }) {
       try {
         const productIds = cart.map((item) => item.id);
 
-        console.log('productIds: ', productIds);
         const response = await getProductsByIds(productIds);
 
         return response.data;

@@ -9,11 +9,14 @@ import Layout from './components/layout/Layout';
 import { ReactLenis } from 'lenis/react';
 import { ROUTES } from './routes/paths';
 
+import { ToastContainer } from 'react-toastify';
+
+
 // TanStack Query Client Setup
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 5 * 60 * 1000,
+      staleTime: 15 * 60 * 1000,
       retry: 1,
       refetchOnWindowFocus: false,
       refetchOnReconnect: false,
@@ -26,7 +29,7 @@ function AppRoutesContent() {
 
   return (
     <>
-      <ReactLenis root options={{ duration: 1.3 }} />
+      <ReactLenis root options={{ duration: 1.25 }} />
 
       {/**
        * <Suspense fallback={ <AnimatePresence mode='wait'><LoaderScreen /></AnimatePresence>}>
@@ -73,6 +76,7 @@ function App() {
             <AppRoutesContent />
           </CartProvider>
         </AuthProvider>
+        <ToastContainer />
       </QueryClientProvider>
     </BrowserRouter>
   );

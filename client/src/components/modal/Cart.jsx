@@ -1,3 +1,4 @@
+import { ROUTES } from '@/routes/paths';
 import { useCart, useCartProducts } from '../../hooks/useCart';
 import Modal from './Modal';
 
@@ -5,13 +6,20 @@ import { motion } from 'framer-motion';
 
 import { RxCross1 } from 'react-icons/rx';
 import { RxCross2 } from 'react-icons/rx';
+import { useNavigate } from 'react-router-dom';
+import { FaTrashAlt } from 'react-icons/fa';
 
-export default function Cart({ isOpen, onClose }) {
+export default function Cart() {
+  const navigate = useNavigate();
+
   const {
     cart: items,
     cartCount: count,
     changeQuantity,
     removeFromCart,
+    clearCart,
+    isOpen,
+    setIsOpen,
   } = useCart();
 
   const { data: products = [], isLoading } = useCartProducts({
@@ -31,7 +39,11 @@ export default function Cart({ isOpen, onClose }) {
   }, 0);
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} className="h-full relative">
+    <Modal
+      isOpen={isOpen}
+      onClose={() => setIsOpen(false)}
+      className="h-full relative"
+    >
       <motion.aside
         initial={{ x: '100%' }}
         animate={{ x: 0 }}
@@ -47,7 +59,7 @@ export default function Cart({ isOpen, onClose }) {
 
           <button
             type="button"
-            onClick={onClose}
+            onClick={() => setIsOpen(false)}
             aria-label="Cerrar carrito"
             className="cursor-pointer"
           >
@@ -118,7 +130,7 @@ export default function Cart({ isOpen, onClose }) {
           )}
         </div>
 
-        <div className="flex flex-col gap-4 justify-between items-center p-7 border-t border-gray/10">
+        <div className="flex flex-col gap-3 justify-between items-center p-7 border-t border-gray/10">
           <div className="flex items-center justify-between w-full">
             <span className="text-gray font-light text-sm">Subtotal</span>
             <span className="text-gray/90 uppercase font-black text-lg">
@@ -126,12 +138,32 @@ export default function Cart({ isOpen, onClose }) {
             </span>
           </div>
 
-          <button
-            aria-label="Continuar compra"
-            className="uppercase w-full text-xs tracking-widest p-4 bg-pitch/20 text-gray cursor-pointer"
-          >
-            Continuar compra
-          </button>
+          <div className="flex items-center gap-3 w-full">
+            <button
+              type="button"
+              onClick={() => {
+                navigate(ROUTES.CHECKOUT);
+                setIsOpen(false);
+              }}
+              disabled={count === 0}
+              aria-label="Continuar compra"
+              className="uppercase flex-1 w-full text-xs tracking-wide p-3.5 text-parch hover:bg-bordeau/90 transition-all cursor-pointer bg-bordeau disabled:bg-pitch/80 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Continuar compra
+            </button>
+            <button
+              type="button"
+              onClick={clearCart}
+              disabled={count === 0}
+              aria-label="Limpiar carrito"
+              className="border border-gray/40 group p-3.5 cursor-pointer hover:bg-gray duration-300 transition-colors"
+            >
+              <FaTrashAlt
+                className="text-gray group-hover:text-parch/80"
+                size={16}
+              />
+            </button>
+          </div>
         </div>
       </motion.aside>
     </Modal>
