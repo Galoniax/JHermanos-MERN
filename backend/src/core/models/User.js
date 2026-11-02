@@ -19,11 +19,22 @@ const UserSchema = new Schema(
     },
     password: {
       type: String,
+      select: false,
+      required: function () {
+        return this.provider === 'LOCAL';
+      },
     },
     phone: {
-      type: String,
-      required: true,
-      trim: true,
+      area_code: {
+        type: String,
+        required: true,
+        trim: true,
+      },
+      number: {
+        type: String,
+        required: true,
+        trim: true,
+      },
     },
     avatar_url: {
       type: String,

@@ -1,16 +1,10 @@
-import mongoose from 'mongoose';
-
-const CATEGORY_MOCK_ID = new mongoose.Types.ObjectId(
-  '64d5ecb8b392d70012345678'
-);
-
 export const PRODUCTS = [
   {
     name: 'Aparador Uspallata',
     description:
       'Aparador de seis puertas fabricado en nogal sostenible con tiradores metálicos en acabado latón. Su silueta minimalista realza el veteado natural de la madera, creando una pieza que combina funcionalidad y elegancia atemporal para espacios contemporáneos.',
     price: 79.99,
-    category: CATEGORY_MOCK_ID,
+    category: 'Dormitorio',
     metrics: {
       ancho: '120 cm',
       profundidad: '40 cm',
@@ -34,13 +28,14 @@ export const PRODUCTS = [
     description:
       'Sistema modular de estantes abierto que combina estructura de acero Sage Green y repisas en roble claro. Perfecta para colecciones y objetos de diseño, su diseño versátil se adapta a cualquier espacio contemporáneo con elegancia funcional.',
     price: 189.99,
-    category: CATEGORY_MOCK_ID,
+    category: 'Oficina',
     metrics: {
       ancho: '100 cm',
       profundidad: '35 cm',
       alto: '200 cm',
       peso: '42 kg',
     },
+    discount: 10,
     especifications: {
       materiales: 'Estructura de acero, Estantes de roble',
       acabado: 'Laca mate ecológica',
@@ -58,7 +53,7 @@ export const PRODUCTS = [
     description:
       'Butaca tapizada en bouclé Dusty Rose con base de madera de guatambú. El respaldo curvo abraza el cuerpo y ofrece máximo confort, mientras que su diseño orgánico aporta calidez y sofisticación a cualquier ambiente contemporáneo.',
     price: 129.99,
-    category: CATEGORY_MOCK_ID,
+    category: 'Sillones',
     metrics: {
       ancho: '80 cm',
       profundidad: '75 cm',
@@ -83,7 +78,7 @@ export const PRODUCTS = [
     description:
       'Sillón lounge en cuero cognac con base giratoria en acero Burnt Sienna. Inspirado en la estética brasilera moderna de los 60, combina comodidad excepcional con un diseño icónico que trasciende tendencias y épocas.',
     price: 219.99,
-    category: CATEGORY_MOCK_ID,
+    category: 'Sillones',
     metrics: {
       ancho: '90 cm',
       profundidad: '85 cm',
@@ -108,13 +103,14 @@ export const PRODUCTS = [
     description:
       'Mesa de centro con sobre circular de mármol Patagonia y base de tres patas en madera de nogal. Su diseño minimalista se convierte en el punto focal perfecto para cualquier sala de estar contemporánea, combinando la frialdad del mármol con la calidez de la madera.',
     price: 99.99,
-    category: CATEGORY_MOCK_ID,
+    category: 'Mesas',
     metrics: {
       ancho: '90 cm',
       profundidad: '90 cm',
       alto: '45 cm',
       peso: '42 kg',
     },
+    discount: 10,
     especifications: {
       materiales: 'Sobre de mármol Patagonia, Patas de nogal',
       acabado: 'Mármol pulido, aceite natural en madera',
@@ -133,13 +129,14 @@ export const PRODUCTS = [
     description:
       'Mesa de noche con cajón oculto y repisa inferior en roble certificado FSC®. Su diseño limpio y funcional permite convivir con diferentes estilos de dormitorio, ofreciendo almacenamiento discreto y elegante para objetos personales.',
     price: 64.99,
-    category: CATEGORY_MOCK_ID,
+    category: 'Mesas',
     metrics: {
       ancho: '45 cm',
       profundidad: '35 cm',
       alto: '60 cm',
       peso: '20 kg',
     },
+    discount: 30,
     especifications: {
       materiales: 'Roble macizo FSC®, Herrajes soft-close',
       acabado: 'Barniz mate de poliuretano',
@@ -157,7 +154,7 @@ export const PRODUCTS = [
     description:
       'Sofá de tres cuerpos tapizado en lino Warm Alabaster con patas cónicas de madera. Los cojines combinan espuma de alta resiliencia con plumón reciclado, ofreciendo comodidad duradera y sostenible para el hogar moderno.',
     price: 299.99,
-    category: CATEGORY_MOCK_ID,
+    category: 'Sillones',
     metrics: {
       ancho: '220 cm',
       profundidad: '90 cm',
@@ -182,7 +179,7 @@ export const PRODUCTS = [
     description:
       'Mesa extensible de roble macizo con tablero biselado y sistema de apertura suave. Su diseño robusto y elegante se adapta perfectamente a reuniones íntimas o grandes celebraciones familiares, extendiéndose de 6 a 10 comensales.',
     price: 249.99,
-    category: CATEGORY_MOCK_ID,
+    category: 'Mesas',
     metrics: {
       ancho: '160-240 cm',
       profundidad: '90 cm',
@@ -195,6 +192,7 @@ export const PRODUCTS = [
       capacidad: '6-10 comensales',
       extension: 'Sistema de mariposa central',
     },
+    discount: 15,
     stock: 6,
     image_url: [
       'https://i.pinimg.com/736x/75/ec/1d/75ec1da189c970acf41ee3acaa6e659b.jpg',
@@ -207,7 +205,7 @@ export const PRODUCTS = [
     description:
       'Set de cuatro sillas apilables en contrachapado moldeado de nogal y estructura tubular pintada en Sage Green. Su diseño ergonómico y materiales de calidad garantizan comodidad y durabilidad en el uso diario, perfectas para comedores contemporáneos.',
     price: 149.99,
-    category: CATEGORY_MOCK_ID,
+    category: 'Sillones',
     metrics: {
       ancho: '45 cm',
       profundidad: '52 cm',
@@ -232,13 +230,14 @@ export const PRODUCTS = [
     description:
       'Escritorio compacto con cajón organizado y tapa pasacables integrada en bambú laminado. Ideal para espacios de trabajo en casa, combina funcionalidad moderna con estética minimalista y sostenible, perfecto para el trabajo remoto.',
     price: 179.99,
-    category: CATEGORY_MOCK_ID,
+    category: 'Oficina',
     metrics: {
       ancho: '120 cm',
       profundidad: '60 cm',
       alto: '75 cm',
       peso: '25 kg',
     },
+    discount: 20,
     especifications: {
       materiales: 'Bambú laminado, Herrajes ocultos',
       acabado: 'Laca mate resistente',
@@ -257,7 +256,7 @@ export const PRODUCTS = [
     description:
       'Silla ergonómica regulable en altura con respaldo de malla transpirable y asiento tapizado en tejido reciclado. Diseñada para largas jornadas de trabajo con máximo confort y apoyo lumbar, ideal para oficinas en casa y espacios de coworking.',
     price: 139.99,
-    category: CATEGORY_MOCK_ID,
+    category: 'Oficina',
     metrics: {
       ancho: '60 cm',
       profundidad: '60 cm',

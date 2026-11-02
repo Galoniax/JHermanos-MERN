@@ -35,6 +35,7 @@ app.use(
 );
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 await connectDB();
 
@@ -51,6 +52,14 @@ app.get(`${API_PREFIX}/health`, (req, res) => {
     timestamp: new Date().toISOString(),
   });
 });
+
+// Middleware de logging personalizado
+app.use((req, res, next) => {
+  req.time = new Date(Date.now()).toString();
+  console.log(req.method, req.hostname, req.path, req.time);
+  next();
+});
+
 
 app.use(`${API_PREFIX}/auth`, Auth);
 app.use(`${API_PREFIX}/contact`, Contact);

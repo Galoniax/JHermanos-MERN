@@ -59,7 +59,7 @@ export class ProductService {
       stock: { $gt: 0 },
       active: true,
     })
-      .select('_id name image_url price finalPrice discount')
+      .select('_id name image_url price finalPrice discount stock')
       .populate('category', 'name')
       .lean();
 

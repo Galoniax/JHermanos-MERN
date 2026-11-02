@@ -20,6 +20,7 @@ export const CLOUDINARY_API_SECRET = process.env.CLOUDINARY_API_SECRET;
 
 export const MP_PUBLIC_KEY = process.env.MP_PUBLIC_KEY;
 export const MP_ACCESS_TOKEN = process.env.MP_ACCESS_TOKEN;
+export const MP_WEBHOOK_TOKEN = process.env.MP_WEBHOOK_TOKEN;
 
 export const RESEND_KEY = process.env.RESEND_KEY;
 

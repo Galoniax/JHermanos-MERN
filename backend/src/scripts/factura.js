@@ -3,16 +3,15 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 import fs from 'fs';
-import { AFIP_ACCESS_TOKEN, CUIT } from '../core/config/config';
+import { AFIP_ACCESS_TOKEN, CUIT } from '../core/config/config.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 console.log('filename:', __filename);
-
 console.log('__dirname:', __dirname);
 
-const certDir = path.join(__dirname, '..', 'certs');
+const certDir = path.join(__dirname, '../..', 'certs');
 
 const cert = fs.readFileSync(path.join(certDir, 'homo.crt'), 'utf-8');
 const key = fs.readFileSync(path.join(certDir, 'homo.key'), 'utf-8');

@@ -16,7 +16,9 @@ async function seedDatabase() {
     await Category.deleteMany({});
 
     // 1. Extraer y crear categorías únicas
-    const categorias = [...new Set(PRODUCTS.map((p) => p.category))];
+    const categorias = [
+      ...new Set(PRODUCTS.map((p) => p.category).filter(Boolean)),
+    ];
     console.log('Categorías detectadas:', categorias);
 
     const categoryMap = {};
@@ -28,10 +30,20 @@ async function seedDatabase() {
     }
 
     // 2. Insertar productos
-    const products = PRODUCTS.map((p) => ({
-      ...p,
-      slug: sluglify(p.name),
-    }));
+    const products = PRODUCTS.map((p) => {
+      const category_id = categoryMap[p.category];
+
+      return {
+        ...p,
+        category: category_id,
+        finalPrice: p.discount
+          ? Math.floor((p.price - p.price * (p.discount / 100)) * 100) / 100
+          : p.price,
+        slug: sluglify(p.name),
+      };
+    });
+
+    console.log(products);
 
     const inserted = await Product.insertMany(products);
     console.log(
