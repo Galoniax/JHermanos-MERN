@@ -6,10 +6,56 @@ import { useAuth } from '../../hooks/useAuth';
 import Cart from '../modal/Cart';
 
 import { FiShoppingBag } from 'react-icons/fi';
+import { RxHamburgerMenu } from 'react-icons/rx';
 
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 
 import avatar from '@/assets/images/DefaultProfile.png';
+
+const NavUl = ({ closeMenu }) => (
+  <ul>
+    <li>
+      <NavLink
+        to={ROUTES.HOME}
+        onClick={closeMenu}
+        className="hover:underline underline-offset-4"
+      >
+        {({ isActive }) => (
+          <span className={isActive ? 'text-bordeau underline' : ''}>
+            Inicio
+          </span>
+        )}
+      </NavLink>
+    </li>
+    <li>
+      <NavLink
+        to={ROUTES.PRODUCTS}
+        onClick={closeMenu}
+        className="hover:underline underline-offset-4"
+      >
+        {({ isActive }) => (
+          <span className={isActive ? 'text-bordeau underline' : ''}>
+            Catálogo
+          </span>
+        )}
+      </NavLink>
+    </li>
+
+    <li>
+      <NavLink
+        to={ROUTES.CONTACT}
+        onClick={closeMenu}
+        className="hover:underline underline-offset-4"
+      >
+        {({ isActive }) => (
+          <span className={isActive ? 'text-bordeau underline' : ''}>
+            Contacto
+          </span>
+        )}
+      </NavLink>
+    </li>
+  </ul>
+);
 
 export default function Navbar() {
   const { cartCount, isOpen, setIsOpen } = useCart();
@@ -40,6 +86,7 @@ export default function Navbar() {
 
   return (
     <>
+      {/** Infinite div */}
       <div className="w-full overflow-hidden bg-pitch/95 py-2.5 flex">
         <motion.div
           className="flex w-max"
@@ -67,73 +114,31 @@ export default function Navbar() {
           ))}
         </motion.div>
       </div>
-      <header className="sticky top-0 z-50 flex flex-row justify-between items-center w-full *:flex-1 tracking-wide bg-parch py-2.5 px-14 border-b border-pitch/15 text-pitch/60">
+
+      <header className="relative sticky top-0 z-50 flex flex-row justify-between items-center w-full *:flex-1 tracking-wide bg-parch py-2.5 px-6 md:px-14 border-b border-pitch/15 text-pitch/60 shadow-[0_2px_5px_rgba(0,0,0,0.1)]">
+        {/** Desktop navigation */}
         <nav
-          className="*:flex flex-row items-center *:gap-8 uppercase text-[11px] font-bold"
+          className="*:flex flex-row items-center *:gap-8 uppercase text-[11px] font-bold hidden md:flex"
           aria-label="Navegación principal"
         >
-          <ul>
-            <li>
-              <NavLink
-                to={ROUTES.HOME}
-                onClick={closeMenu}
-                className="hover:underline underline-offset-4"
-              >
-                {({ isActive }) => (
-                  <span className={isActive ? 'text-bordeau underline' : ''}>
-                    Inicio
-                  </span>
-                )}
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to={ROUTES.PRODUCTS}
-                onClick={closeMenu}
-                className="hover:underline underline-offset-4"
-              >
-                {({ isActive }) => (
-                  <span className={isActive ? 'text-bordeau underline' : ''}>
-                    Catálogo
-                  </span>
-                )}
-              </NavLink>
-            </li>
-
-            <li>
-              <NavLink
-                to={ROUTES.CONTACT}
-                onClick={closeMenu}
-                className="hover:underline underline-offset-4"
-              >
-                {({ isActive }) => (
-                  <span className={isActive ? 'text-bordeau underline' : ''}>
-                    Contacto
-                  </span>
-                )}
-              </NavLink>
-            </li>
-          </ul>
+          <NavUl key="desktop-nav" closeMenu={closeMenu} />
         </nav>
 
-        <div className="flex flex-row justify-center">
+        <div className="flex flex-row md:justify-center">
           <Link
             to={ROUTES.HOME}
             aria-label="Página de inicio"
-            className={location.pathname === ROUTES.HOME ? 'active-link' : ''}
+            className="w-10 h-10"
           >
             <img
               src="/img/logo.png"
               alt="Hermanos Jota"
-              style={{
-                height: '40px',
-                width: 'auto',
-              }}
+              className="h-full w-full shrink-0 object-contain"
             />
           </Link>
         </div>
 
-        <div className="flex flex-row justify-end items-center gap-5">
+        <div className="flex flex-row justify-end items-center gap-3 md:gap-5">
           <button
             type="button"
             onClick={() => setIsOpen(true)}
@@ -148,45 +153,86 @@ export default function Navbar() {
             )}
           </button>
 
-          {isAuthenticated ? (
-            <Link to={ROUTES.PROFILE} className="cursor-pointer">
-              <div className="w-8 h-8 rounded-full overflow-hidden ring ring-pitch/40">
-                <img src={user?.avatar_url || avatar} alt="Usuario" />
-              </div>
-            </Link>
-          ) : (
-            <Link
-              to={ROUTES.LOGIN}
-              className="cursor-pointer font-medium text-[13px] border border-pitch/10 hover:border-pitch/20 py-1 px-4 transition-colors duration-300"
-            >
-              <span>Iniciar Sesión</span>
-            </Link>
-          )}
+          {/** Exclusivo para desktop */}
+          <div className="hidden md:block">
+            {isAuthenticated ? (
+              <Link to={ROUTES.PROFILE} className="cursor-pointer">
+                <div className="w-8 h-8 rounded-full overflow-hidden ring ring-pitch/40">
+                  <img src={user?.avatar_url || avatar} alt="Usuario" />
+                </div>
+              </Link>
+            ) : (
+              <Link
+                to={ROUTES.LOGIN}
+                className="cursor-pointer font-medium text-[13px] border border-pitch/10 hover:border-pitch/20 py-1 px-4 transition-colors duration-300"
+              >
+                <span>Iniciar Sesión</span>
+              </Link>
+            )}
+          </div>
 
           <button
             type="button"
-            id="menu-toggle"
-            className={`menu-toggle ${isMenuOpen ? 'menu-activo' : ''}`}
+            className="md:hidden cursor-pointer hover:text-bordeau transition-colors duration-200"
             aria-label={isMenuOpen ? 'Cerrar menú' : 'Abrir menú'}
             aria-expanded={isMenuOpen}
-            aria-controls="main-nav"
             onClick={() => setIsMenuOpen((prev) => !prev)}
           >
-            <span className="menu-linea" aria-hidden="true"></span>
-            <span className="menu-linea" aria-hidden="true"></span>
-            <span className="menu-linea" aria-hidden="true"></span>
+            <RxHamburgerMenu size={22} />
           </button>
         </div>
+
+        {/** Menú mobile */}
+        <AnimatePresence mode="wait">
+          {isMenuOpen && (
+            <motion.nav
+              initial={{ height: 0 }}
+              animate={{ height: 'auto' }}
+              exit={{
+                height: 0,
+              }}
+              transition={{
+                ease: 'linear',
+                duration: 0.1,
+              }}
+              
+              
+              className="flex flex-col gap-5 **:items-center absolute top-full left-0 right-0 z-50 bg-parch md:hidden py-4 uppercase text-[11px] font-bold overflow-hidden border-b border-dotted border-pitch/20 shadow-[0_2px_5px_rgba(0,0,0,0.1)]"
+              aria-label="Navegación móvil"
+            >
+              <div className="*:flex *:gap-5 *:flex-col">
+                <NavUl key="mobile-nav" closeMenu={closeMenu} />
+              </div>
+
+              {isAuthenticated ? (
+                <Link
+                  to={ROUTES.PROFILE}
+                  onClick={closeMenu}
+                  className="cursor-pointer flex flex-row justify-center gap-3 hover:underline underline-offset-4"
+                >
+                  <div className="w-6 h-6 rounded-full overflow-hidden ring ring-pitch/40">
+                    <img
+                      src={user?.avatar_url || avatar}
+                      className="w-full h-full object-cover"
+                      alt="Usuario"
+                    />
+                  </div>
+                  <p>Perfil</p>
+                </Link>
+              ) : (
+                <Link
+                  to={ROUTES.LOGIN}
+                  className="cursor-pointer font-medium text-[13px] border border-pitch/10 hover:border-pitch/20 py-1 px-4 transition-colors duration-300"
+                >
+                  <span>Iniciar Sesión</span>
+                </Link>
+              )}
+            </motion.nav>
+          )}
+        </AnimatePresence>
       </header>
 
       {isOpen && <Cart />}
-
-      {/* Overlay de fondo para el menú móvil */}
-      <div
-        className={`menu-overlay ${isMenuOpen ? 'is-visible' : ''}`}
-        onClick={closeMenu}
-        aria-hidden="true"
-      />
     </>
   );
 }

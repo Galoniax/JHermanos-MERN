@@ -8,6 +8,9 @@ import { RxCross1 } from 'react-icons/rx';
 import { RxCross2 } from 'react-icons/rx';
 import { useNavigate } from 'react-router-dom';
 import { FaTrashAlt } from 'react-icons/fa';
+import Skeleton from 'react-loading-skeleton';
+import { toast } from 'react-toastify';
+import { ToastComponent } from '../ui/feedback/ToastComponent';
 
 export default function Cart() {
   const navigate = useNavigate();
@@ -22,12 +25,15 @@ export default function Cart() {
     setIsOpen,
   } = useCart();
 
-  const { data: products = [], isLoading } = useCartProducts({
+  const {
+    data: products = [],
+    isLoading,
+    error,
+    isError,
+  } = useCartProducts({
     cart: items,
     count,
   });
-
-  //TODO: Skeleton
 
   // TODO: Cambiar a {formatPrice(product.finalPrice?.$numberDecimal || product.finalPrice)}
   const total = items.reduce((total, item) => {
@@ -38,10 +44,23 @@ export default function Cart() {
     return total + product.price.$numberDecimal * item.cantidad;
   }, 0);
 
+  if (isError) {
+    toast.error(
+      <ToastComponent
+        message={error.error}
+        status={error.status}
+        type="error"
+        closeToast={() => toast.dismiss()}
+      />
+    );
+  }
+
   return (
     <Modal
       isOpen={isOpen}
-      onClose={() => setIsOpen(false)}
+      onClose={() => {
+        setIsOpen(false);
+      }}
       className="h-full relative"
     >
       <motion.aside
@@ -67,66 +86,96 @@ export default function Cart() {
           </button>
         </div>
 
-        <div className="flex-1 flex flex-col gap-6 overflow-y-auto p-6">
-          {count === 0 ? (
-            <div className="flex justify-center items-center h-full">
-              <p className="text-pitch/80 text-sm">El carrito está vacío</p>
-            </div>
-          ) : (
-            products?.map((product) => {
-              const item = items.find((item) => item.id === product._id);
-
-              return (
+        <div className="flex-1 flex flex-col gap-6 overflow-y-auto overscroll-contain p-6 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-transparent">
+          {isLoading
+            ? Array.from({ length: 5 }).map((_, index) => (
                 <div
-                  key={product._id}
-                  className="flex items-start justify-between gap-3"
+                  key={index}
+                  className="flex gap-3 opacity-70 brightness-90"
                 >
-                  <img
-                    src={product.image_url[0]}
-                    alt={product.name}
-                    className="w-18 h-full min-h-24 object-cover border border-pitch/40"
+                  <Skeleton
+                    height="6rem"
+                    width={64}
+                    baseColor="var(--parch)"
+                    highlightColor="#ffffff"
+                    duration={2}
+                    borderRadius="0px"
                   />
-                  <div className="flex flex-col gap-1 flex-1 justify-between items-start h-full">
-                    <span className="text-[13px] font-medium text-pitch/80 tracking-tight line-clamp-1">
-                      {product.name}
-                    </span>
-                    <span className="text-[10px] text-gray/60 font-light tracking-tight">
-                      {product.category}
-                    </span>
 
-                    <div className="flex items-center justify-between w-fit *:py-1.5 *:px-1 px-2 gap-4 border border-pitch/20 *:text-pitch/60 text-xs">
+                  <div className="flex flex-col gap-1 flex-1">
+                    <Skeleton
+                      count={2}
+                      baseColor="var(--parch)"
+                      highlightColor="#ffffff"
+                      duration={2}
+                      borderRadius="2px"
+                    />
+                  </div>
+                </div>
+              ))
+            : products &&
+              products.length > 0 &&
+              products.map((product) => {
+                const item = items.find((item) => item.id === product._id);
+
+                return (
+                  <div
+                    key={product._id}
+                    className="flex items-start justify-between gap-3"
+                  >
+                    <img
+                      src={product.image_url[0]}
+                      alt={product.name}
+                      className="w-18 h-full min-h-24 object-cover border border-pitch/40"
+                    />
+                    <div className="flex flex-col gap-1 flex-1 justify-between items-start h-full">
+                      <div>
+                        <span className="text-sm font-medium text-pitch/80 tracking-tight line-clamp-1">
+                          {product.name}
+                        </span>
+                        <span className="text-xs text-gray/80 font-light">
+                          {product.category?.name}
+                        </span>
+                      </div>
+
+                      <div className="flex items-center justify-between w-fit *:py-1.5 *:px-1 px-2 gap-4 border border-pitch/20 *:text-pitch/60 text-xs">
+                        <button
+                          type="button"
+                          aria-label="Decrementar cantidad"
+                          className="cursor-pointer"
+                          onClick={() => changeQuantity(product, -1)}
+                        >
+                          -
+                        </button>
+                        <span className="">{item.cantidad}</span>
+                        <button
+                          type="button"
+                          aria-label="Incrementar cantidad"
+                          className="cursor-pointer"
+                          onClick={() => changeQuantity(product, 1)}
+                        >
+                          +
+                        </button>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
                       <button
                         type="button"
-                        aria-label="Decrementar cantidad"
-                        className="cursor-pointer"
-                        onClick={() => changeQuantity(product, -1)}
+                        aria-label="Eliminar producto"
+                        className="p-1 rounded-full border border-pitch/20 cursor-pointer text-pitch/60"
+                        onClick={() => removeFromCart(product._id)}
                       >
-                        -
-                      </button>
-                      <span className="">{item.cantidad}</span>
-                      <button
-                        type="button"
-                        aria-label="Incrementar cantidad"
-                        className="cursor-pointer"
-                        onClick={() => changeQuantity(product, 1)}
-                      >
-                        +
+                        <RxCross2 size={14} className=" cursor-pointer" />
                       </button>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <button
-                      type="button"
-                      aria-label="Eliminar producto"
-                      className="p-1 rounded-full border border-pitch/20 cursor-pointer text-pitch/60"
-                      onClick={() => removeFromCart(product._id)}
-                    >
-                      <RxCross2 size={14} className=" cursor-pointer" />
-                    </button>
-                  </div>
-                </div>
-              );
-            })
+                );
+              })}
+
+          {!isError && !isLoading && count === 0 && (
+            <div className="flex justify-center items-center h-full">
+              <p className="text-pitch/80 text-sm">El carrito está vacío</p>
+            </div>
           )}
         </div>
 
@@ -142,8 +191,8 @@ export default function Cart() {
             <button
               type="button"
               onClick={() => {
-                navigate(ROUTES.CHECKOUT);
                 setIsOpen(false);
+                navigate(ROUTES.CHECKOUT);
               }}
               disabled={count === 0}
               aria-label="Continuar compra"

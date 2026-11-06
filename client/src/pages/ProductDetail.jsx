@@ -14,6 +14,8 @@ import { FaChevronRight } from 'react-icons/fa';
 
 import { motion } from 'framer-motion';
 import { useAuth } from '@/hooks/useAuth';
+import { toast } from 'react-toastify';
+import { ToastComponent } from '@/components/ui/feedback/ToastComponent';
 
 function Specification({ title, value }) {
   const [isOpen, setIsOpen] = useState(true);
@@ -86,8 +88,14 @@ export default function ProductDetail() {
   const handleIncrement = () => {
     if (!product) return;
 
-    //TODO: Toast
     if (cantidad >= product.stock) {
+      toast.error(
+        <ToastComponent
+          message="Límite de stock alcanzado"
+          type="error"
+          closeToast={() => toast.dismiss()}
+        />
+      );
       return;
     }
 
@@ -136,7 +144,7 @@ export default function ProductDetail() {
           </Link>
           <FaChevronRight className="text-pitch/50" size={10} />
 
-          <span className="text-pitch/40">{product.category}</span>
+          <span className="text-pitch/40">{product.category.name}</span>
         </div>
 
         <div className=" flex flex-col lg:flex-row justify-center items-start *:flex-1 gap-8">

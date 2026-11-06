@@ -10,7 +10,7 @@ import { ReactLenis } from 'lenis/react';
 import { ROUTES } from './routes/paths';
 
 import { ToastContainer } from 'react-toastify';
-
+import { Suspense } from 'react';
 
 // TanStack Query Client Setup
 const queryClient = new QueryClient({
@@ -30,39 +30,37 @@ function AppRoutesContent() {
   return (
     <>
       <ReactLenis root options={{ duration: 1.25 }} />
+     
+      <Suspense fallback={<></>}>
+        <Routes>
+          <Route element={<Layout />}>
+            {appRoutes.map((route, idx) => {
+              if (route.children) {
+                return (
+                  <Route key={idx} element={route.element}>
+                    {route.children.map((childRoute, childIdx) => (
+                      <Route
+                        key={childIdx}
+                        path={childRoute.path}
+                        element={childRoute.element}
+                      />
+                    ))}
+                  </Route>
+                );
+              }
 
-      {/**
-       * <Suspense fallback={ <AnimatePresence mode='wait'><LoaderScreen /></AnimatePresence>}>
-       */}
-
-      <Routes>
-        <Route element={<Layout />}>
-          {appRoutes.map((route, idx) => {
-            if (route.children) {
               return (
-                <Route key={idx} element={route.element}>
-                  {route.children.map((childRoute, childIdx) => (
-                    <Route
-                      key={childIdx}
-                      path={childRoute.path}
-                      element={childRoute.element}
-                    />
-                  ))}
-                </Route>
+                <Route
+                  key={idx}
+                  index={ROUTES.HOME === isPath.pathname}
+                  path={route.path}
+                  element={route.element}
+                />
               );
-            }
-
-            return (
-              <Route
-                key={idx}
-                index={ROUTES.HOME === isPath.pathname}
-                path={route.path}
-                element={route.element}
-              />
-            );
-          })}
-        </Route>
-      </Routes>
+            })}
+          </Route>
+        </Routes>
+      </Suspense>
     </>
   );
 }
@@ -76,7 +74,16 @@ function App() {
             <AppRoutesContent />
           </CartProvider>
         </AuthProvider>
-        <ToastContainer />
+        <ToastContainer
+          position="bottom-right"
+          stacked={true}
+          icon={false}
+          closeButton={false}
+          draggable="mouse"
+          toastClassName="!rounded-t-none !py-4 overflow-hidden !bg-parch border border-pitch/20"
+          progressClassName="!h-1"
+          autoClose={5000}
+        />
       </QueryClientProvider>
     </BrowserRouter>
   );
