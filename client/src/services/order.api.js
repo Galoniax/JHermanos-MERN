@@ -6,6 +6,6 @@ export const createOrder = async (orderData) => {
 };
 
 // Obtener órdenes de compra
-export const getOrders = async () => {
-  return await interceptor.get('/orders');
+export const getOrders = async (page) => {
+  return await interceptor.get('/orders', { params: { page } });
 };

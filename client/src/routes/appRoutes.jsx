@@ -5,6 +5,7 @@ import {
   Login,
   ProductDetail,
   Products,
+  Profile,
   Register,
 } from '../pages';
 import { ROUTES } from './paths';
@@ -21,8 +22,12 @@ export const appRoutes = [
     element: <Products />,
   },
   {
-    path: '/product/:id/:slug?',
+    path: `/product/:id/:slug?`,
     element: <ProductDetail />,
+  },
+  {
+    path: ROUTES.PROFILE,
+    element: <Profile />,
   },
   {
     path: ROUTES.CONTACT,

@@ -1,13 +1,10 @@
 import { Router } from 'express';
 import { OrderController } from '../controllers/order.controller.js';
+import { isAuthenticated } from '../../../core/middleware/isAuthenticated.js';
 
 const router = Router();
 const controller = new OrderController();
 
-// POST /api/orders - Crear orden de compra
-router.post('/', controller.create);
-
-// GET /api/orders - Listar órdenes
-router.get('/', controller.list);
+router.get('/', isAuthenticated, controller.getOrders);
 
 export default router;
